@@ -8,10 +8,11 @@
 import UIKit
 
 class ImagesListViewController: UIViewController {
+    // MARK: - IB Outlets
     @IBOutlet private var TableView: UITableView!
     
+    // MARK: - Private Properties
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
-    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -19,13 +20,14 @@ class ImagesListViewController: UIViewController {
         return formatter
     }()
     
+    // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        TableView.rowHeight = 200
         TableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        // Do any additional setup after loading the view.
     }
 }
+
+    // MARK: - Extensions
 
 extension ImagesListViewController: UITableViewDataSource {
     
@@ -46,7 +48,6 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController {
 
-    
     func applyGradient(to view: UIView) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
@@ -54,7 +55,6 @@ extension ImagesListViewController {
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0, y: 1)
         view.layer.insertSublayer(gradientLayer, at: 0)
-        
     }
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
@@ -67,15 +67,15 @@ extension ImagesListViewController {
 }
 
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return 0
         }
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        
         let ratio = (tableView.frame.width - imageInsets.left - imageInsets.right) / image.size.width
         let height = ratio * image.size.height + imageInsets.top + imageInsets.bottom
         return height
