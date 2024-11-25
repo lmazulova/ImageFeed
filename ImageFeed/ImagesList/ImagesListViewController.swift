@@ -21,6 +21,7 @@ class ImagesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TableView.rowHeight = 200
         TableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         // Do any additional setup after loading the view.
     }
@@ -41,8 +42,6 @@ extension ImagesListViewController: UITableViewDataSource {
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
-    
-    
 }
 
 extension ImagesListViewController {
@@ -82,3 +81,4 @@ extension ImagesListViewController: UITableViewDelegate {
         return height
     }
 }
+
