@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     // MARK: - IB Outlets
-    @IBOutlet private var TableView: UITableView!
+    @IBOutlet private weak var TableView: UITableView!
     
     // MARK: - Private Properties
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
@@ -27,8 +27,8 @@ class ImagesListViewController: UIViewController {
     }
 }
 
-    // MARK: - Extensions
 
+// MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,31 +41,13 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        imageListCell.selectionStyle = .none
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
 }
 
-extension ImagesListViewController {
-
-    func applyGradient(to view: UIView) {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = view.bounds
-        gradientLayer.colors = [UIColor.ypBlackAlpha0.cgColor, UIColor.ypBlackAlpha02.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-    
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        applyGradient(to: cell.gradientView)
-        guard let image = UIImage(named: photosName[indexPath.row]) else {return}
-        cell.ImageView.image = image
-        cell.dataLabel.text = dateFormatter.string(from: Date())
-        cell.likeButton.imageView?.image = UIImage(named: indexPath.row%2 == 0 ? "icActive" : "noActive")
-    }
-}
-
+// MARK: - UITableViewDelegate
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -82,3 +64,23 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - Extensions
+extension ImagesListViewController {
+    
+    func applyGradient(to view: UIView) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [UIColor.ypBlackAlpha0.cgColor, UIColor.ypBlackAlpha02.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+        applyGradient(to: cell.gradientView)
+        guard let image = UIImage(named: photosName[indexPath.row]) else {return}
+        cell.ImageView.image = image
+        cell.dataLabel.text = dateFormatter.string(from: Date())
+        cell.likeButton.imageView?.image = UIImage(named: indexPath.row % 2 == 0 ? "icActive" : "noActive")
+    }
+}
