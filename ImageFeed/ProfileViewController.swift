@@ -42,7 +42,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let name = addLabel(text: "Екатерина Новикова")
-        name.font = UIFont.systemFont(ofSize: 23)
+        name.font = UIFont.systemFont(ofSize: 23, weight: .bold)
         let tag = addLabel(text: "@ekaterina_nov")
         tag.textColor = .ypGrey
         let description = addLabel(text: "Hello, world!")
