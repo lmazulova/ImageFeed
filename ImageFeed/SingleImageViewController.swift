@@ -34,7 +34,7 @@ final class SingleImageViewController: UIViewController {
         present(share, animated: true, completion: nil)
     }
     
-    // MARK: - viewDidLoad
+    // MARK: - override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         sharingBtn.setTitle("", for: .normal)
@@ -44,6 +44,12 @@ final class SingleImageViewController: UIViewController {
         imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard let image = image else { return }
+        centerImageInScrollView(image: image)
     }
 }
 
@@ -67,17 +73,17 @@ extension SingleImageViewController: UIScrollViewDelegate {
         let imageSize = image.size
         let hScale = visibleRectSize.height/imageSize.height
         let wScale = visibleRectSize.width/imageSize.width
-        let scale = min(maxZoomScale, max(minZoomScale, min(hScale, wScale)))
+        let scale = min(maxZoomScale, max(minZoomScale, max(hScale, wScale)))
         scrollView.setZoomScale(scale, animated: false)
         scrollView.layoutIfNeeded()
-        centerImageInScrollView(image: image)
     }
     
     private func centerImageInScrollView(image: UIImage) {
+        view.layoutIfNeeded()
         let visibleRectSize = scrollView.bounds.size
         let newContentSize = scrollView.contentSize
-        let horizontalInset = max(0, (visibleRectSize.width - newContentSize.width) / 2)
-        let verticalInset = max(0, (visibleRectSize.height - newContentSize.height) / 2)
+        let horizontalInset = (visibleRectSize.width - newContentSize.width) / 2
+        let verticalInset = (visibleRectSize.height - newContentSize.height) / 2
     
         scrollView.contentInset = UIEdgeInsets(
             top: verticalInset,
