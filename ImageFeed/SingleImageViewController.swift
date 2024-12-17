@@ -19,9 +19,9 @@ final class SingleImageViewController: UIViewController {
     }
     
     // MARK: - IB Outlets
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var sharingBtn: UIButton!
+    @IBOutlet weak private var backButton: UIButton!
+    @IBOutlet weak private var scrollView: UIScrollView!
+    @IBOutlet weak private var sharingBtn: UIButton!
     @IBOutlet weak private var imageView: UIImageView!
     
     // MARK: - IB Actions
