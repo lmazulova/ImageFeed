@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     // MARK: - IB Outlets
-    @IBOutlet private var TableView: UITableView!
+    @IBOutlet private weak var TableView: UITableView!
     
     // MARK: - Private Properties
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
@@ -19,16 +19,32 @@ class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     }()
+    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         TableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == ShowSingleImageSegueIdentifier {
+            guard let viewController = segue.destination as? SingleImageViewController,
+                  let indexPath = sender as? IndexPath
+            else {
+                assertionFailure("Invalid segue destination")
+                return
+            }
+            let image = UIImage(named: photosName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
 }
 
-    // MARK: - Extensions
 
+// MARK: - UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,13 +57,33 @@ extension ImagesListViewController: UITableViewDataSource {
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
         }
+        imageListCell.selectionStyle = .none
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
     }
 }
 
-extension ImagesListViewController {
+// MARK: - UITableViewDelegate
+extension ImagesListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let image = UIImage(named: photosName[indexPath.row]) else {
+            return 0
+        }
+        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
+        let ratio = (tableView.frame.width - imageInsets.left - imageInsets.right) / image.size.width
+        let height = ratio * image.size.height + imageInsets.top + imageInsets.bottom
+        return height
+    }
+}
 
+// MARK: - Extensions
+extension ImagesListViewController {
+    
     func applyGradient(to view: UIView) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
@@ -62,23 +98,6 @@ extension ImagesListViewController {
         guard let image = UIImage(named: photosName[indexPath.row]) else {return}
         cell.ImageView.image = image
         cell.dataLabel.text = dateFormatter.string(from: Date())
-        cell.likeButton.imageView?.image = UIImage(named: indexPath.row%2 == 0 ? "icActive" : "noActive")
+        cell.likeButton.imageView?.image = UIImage(named: indexPath.row % 2 == 0 ? "activeLike" : "inactiveLike")
     }
 }
-
-extension ImagesListViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return 0
-        }
-        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-        let ratio = (tableView.frame.width - imageInsets.left - imageInsets.right) / image.size.width
-        let height = ratio * image.size.height + imageInsets.top + imageInsets.bottom
-        return height
-    }
-}
-
