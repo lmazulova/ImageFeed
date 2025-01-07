@@ -1,9 +1,3 @@
-//
-//  SingleImageViewController.swift
-//  ImageFeed
-//
-//  Created by user on 10.12.2024.
-//
 
 import UIKit
 final class SingleImageViewController: UIViewController {
@@ -79,7 +73,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
         let newContentSize = scrollView.contentSize
         let horizontalInset = (visibleRectSize.width - newContentSize.width) / 2
         let verticalInset = (visibleRectSize.height - newContentSize.height) / 2
-    
+        
         scrollView.contentInset = UIEdgeInsets(
             top: verticalInset,
             left: horizontalInset,
