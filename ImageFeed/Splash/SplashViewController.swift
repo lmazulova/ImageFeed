@@ -35,7 +35,7 @@ final class SplashViewController: UIViewController {
 // MARK: - AuthViewControllerDelegate
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController, code: String) {
-        ProgressHUD.animate()
+        UIBlockingProgressHUD.show()
         vc.dismiss(animated: true) { [weak self] in
             guard let self = self else {return}
             self.fetchOAuthToken(code)
@@ -60,7 +60,7 @@ extension SplashViewController {
     private func fetchOAuthToken(_ code: String) {
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
-            ProgressHUD.dismiss()
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
                 self.switchToTabBarController()
