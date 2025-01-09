@@ -45,6 +45,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         guard let token = storage.token else {
             return
         }
+        print(token)
         self.fetchProfile(token)
     }
         

@@ -8,10 +8,6 @@ final class ProfileService {
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
-        guard task != nil else {
-            completion(.failure(AuthServiceError.invalidRequest))
-            return
-        }
         task?.cancel()
         
         let url = URL(string: "https://api.unsplash.com/me")!
