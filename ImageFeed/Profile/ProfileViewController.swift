@@ -38,9 +38,11 @@ final class ProfileViewController: UIViewController {
         return button
     }
     
+    
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         guard let token = OAuth2TokenStorage().token else {return}
         ProfileService().fetchProfile(token){
             result in
@@ -67,11 +69,15 @@ final class ProfileViewController: UIViewController {
                     exitButton.heightAnchor.constraint(equalToConstant: 22),
                     exitButton.widthAnchor.constraint(equalToConstant: 20)
                 ])
-            case .failure:
-                // TODO
+            case .failure(let error):
+                print(error)
                 break
-            }
         }
+        }
+    }
+    
+    private func updateProfileDetails(profile: Profile) {
+        
     }
     
     @objc

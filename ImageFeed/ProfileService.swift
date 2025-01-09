@@ -1,24 +1,48 @@
 import UIKit
 final class ProfileService {
+    static let shared = ProfileService()
+    private init() {}
+    private let urlSession = URLSession.shared
+    private(set) var profile: Profile?
+    private var task: URLSessionTask?
+    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        guard task != nil else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        task?.cancel()
+        
         let url = URL(string: "https://api.unsplash.com/me")!
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        let task = URLSession.shared.data(for: request){
+        let task = URLSession.shared.data(for: request){ [weak self]
             result in
             switch result {
             case .success(let data):
                 do {
                     let ProfileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
-                    let Profile = Profile(username: ProfileResult.username, first_name: ProfileResult.first_name, last_name: ProfileResult.last_name, bio: ProfileResult.bio)
-                    completion(.success(Profile))
+                    let profile = Profile(
+                        username: ProfileResult.username,
+                        first_name: ProfileResult.first_name,
+                        last_name: ProfileResult.last_name,
+                        bio: ProfileResult.bio
+                    )
+                    self?.profile = profile
+                    completion(.success(profile))
                 } catch {
                     completion(.failure(error))
                 }
             case .failure(let error):
                 completion(.failure(error))
             }
+            
+            DispatchQueue.main.async {
+                        self?.task = nil
+            }
         }
+        self.task = task
         task.resume()
     }
 }

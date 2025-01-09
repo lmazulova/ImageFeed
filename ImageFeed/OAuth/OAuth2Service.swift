@@ -1,12 +1,17 @@
 import UIKit
 
 enum AuthServiceError: Error {
-    
+    case invalidRequest
 }
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
+    
+    private let urlSession = URLSession.shared
+    
+    private var task: URLSessionTask?
+    private var lastCode: String?
     
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard var baseUrl = URLComponents(string: "https://unsplash.com/oauth/token") else {
@@ -30,8 +35,19 @@ final class OAuth2Service {
     }
     
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        if let URLRequest = makeOAuthTokenRequest(code: code){
-            let task = URLSession.shared.data(for: URLRequest){
+        assert(Thread.isMainThread)
+        guard lastCode != code else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        task?.cancel()
+        lastCode = code
+        guard let URLRequest = makeOAuthTokenRequest(code: code)
+        else {
+            completion(.failure(AuthServiceError.invalidRequest))
+            return
+        }
+        let task = URLSession.shared.data(for: URLRequest){ [weak self]
                 result in
                 switch result {
                 case .success(let data):
@@ -45,8 +61,13 @@ final class OAuth2Service {
                 case .failure(let error):
                     completion(.failure(error))
                 }
+                
+                DispatchQueue.main.async {
+                            self?.task = nil
+                            self?.lastCode = nil
+                }
             }
+            self.task = task
             task.resume()
-        }
     }
 }
