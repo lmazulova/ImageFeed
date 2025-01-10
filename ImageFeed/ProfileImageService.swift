@@ -15,17 +15,16 @@ final class ProfileImageService {
         assert(Thread.isMainThread)
         task?.cancel()
         guard let token = storage.token else { return }
-        let url = URL(string: "https://api.unsplash.com/users/:username?username=\(username)")!
+        let url = URL(string: "https://api.unsplash.com/users/\(username)")!
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        print(request)
         let task = URLSession.shared.data(for: request){ [weak self]
             result in
             switch result {
             case .success(let data):
                 do {
                     let UserProfile = try JSONDecoder().decode(UserProfile.self, from: data)
-                    let avatarURL = UserProfile.profileImage.medium
+                    let avatarURL = UserProfile.profileImage.small
                     self?.avatarURL = avatarURL
                     completion(.success(avatarURL))
                     NotificationCenter.default
@@ -35,11 +34,9 @@ final class ProfileImageService {
                             userInfo: ["URL": avatarURL])
                 } catch {
                     completion(.failure(error))
-                    print(#line)
                 }
             case .failure(let error):
                 completion(.failure(error))
-                print(#line)
             }
             
             DispatchQueue.main.async {
@@ -61,5 +58,5 @@ struct UserProfile: Codable {
 
 // MARK: - ProfileImage
 struct ProfileImage: Codable {
-    let medium: String
+    let small: String
 }

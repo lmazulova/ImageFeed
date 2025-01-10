@@ -6,7 +6,7 @@ enum webViewConstants {
 }
 
 final class WebViewViewController: UIViewController {
-    
+    private var estimateProgressObservation: NSKeyValueObservation?
     // MARK: - IB Outlets
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var progressView: UIProgressView!
@@ -19,37 +19,14 @@ final class WebViewViewController: UIViewController {
         super.viewDidLoad()
         webView.navigationDelegate = self
         loadAuthView()
+        estimateProgressObservation = webView.observe(
+            \.estimatedProgress,
+            options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress()
+             })
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil
-        )
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        webView.removeObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress)
-        )
-    }
-    
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
-    
     // MARK: - Private Methods
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: webViewConstants.unsplashAuthorizeURLString) else {
