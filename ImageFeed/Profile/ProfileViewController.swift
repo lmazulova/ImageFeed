@@ -3,6 +3,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private var profileImageServiceObserver: NSObjectProtocol?
     // MARK: - views
     func addLabel(text: String?) -> UILabel{
         let label = UILabel()
@@ -42,8 +43,25 @@ final class ProfileViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else {return}
+                self.updateAvatar()
+            }
+        updateAvatar()
         guard let profile = ProfileService.shared.profile else {return}
         self.updateProfileDetails(profile: profile)
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
     }
     
     private func updateProfileDetails(profile: Profile) {

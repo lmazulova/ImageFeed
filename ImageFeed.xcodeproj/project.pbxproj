@@ -10,6 +10,7 @@
 		CE1B6C8A2D2F08BF000A1BA7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1B6C892D2F08BF000A1BA7 /* Constants.swift */; };
 		CE1B6C8C2D2F0902000A1BA7 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1B6C8B2D2F0902000A1BA7 /* UIBlockingProgressHUD.swift */; };
 		CE1B6C8E2D2F0D15000A1BA7 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1B6C8D2D2F0D15000A1BA7 /* ProfileService.swift */; };
+		CE1B6C902D2FFF64000A1BA7 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1B6C8F2D2FFF64000A1BA7 /* ProfileImageService.swift */; };
 		CE229EAF2CF208FA00333100 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE229EAE2CF208FA00333100 /* ImagesListCell.swift */; };
 		CE381CBB2D034AB800E222EE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE381CBA2D034AB800E222EE /* ProfileViewController.swift */; };
 		CE65C1192CF2A25D009C8669 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE8EE4092CEF891600288074 /* Main.storyboard */; };
@@ -34,6 +35,7 @@
 		CE1B6C892D2F08BF000A1BA7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CE1B6C8B2D2F0902000A1BA7 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		CE1B6C8D2D2F0D15000A1BA7 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		CE1B6C8F2D2FFF64000A1BA7 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		CE229EAE2CF208FA00333100 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		CE381CBA2D034AB800E222EE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CE812AB92D086496006DA3B4 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				CEBB7A742D15D2BA002EFC93 /* URLSession+data.swift */,
 				CE1B6C8B2D2F0902000A1BA7 /* UIBlockingProgressHUD.swift */,
 				CE1B6C8D2D2F0D15000A1BA7 /* ProfileService.swift */,
+				CE1B6C8F2D2FFF64000A1BA7 /* ProfileImageService.swift */,
 				CE8EE40C2CEF891800288074 /* Assets.xcassets */,
 				CE8EE4092CEF891600288074 /* Main.storyboard */,
 				CE8EE40E2CEF891800288074 /* LaunchScreen.storyboard */,
@@ -249,6 +252,7 @@
 				CE229EAF2CF208FA00333100 /* ImagesListCell.swift in Sources */,
 				CE381CBB2D034AB800E222EE /* ProfileViewController.swift in Sources */,
 				CEBB7A732D148F4E002EFC93 /* OAuth2Service.swift in Sources */,
+				CE1B6C902D2FFF64000A1BA7 /* ProfileImageService.swift in Sources */,
 				CE1B6C8A2D2F08BF000A1BA7 /* Constants.swift in Sources */,
 				CEBB7A792D1F55A2002EFC93 /* SplashViewController.swift in Sources */,
 				CED37DF22D1325FB00EC4F54 /* AuthViewController.swift in Sources */,

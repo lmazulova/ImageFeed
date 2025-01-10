@@ -27,7 +27,7 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         if let token = storage.token {
             self.fetchProfile(token)
-            switchToTabBarController()
+//            switchToTabBarController()
         } else {
             performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -42,13 +42,9 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else {return}
             self.fetchOAuthToken(code)
         }
-        guard let token = storage.token else {
-            return
-        }
-        print(token)
-        self.fetchProfile(token)
     }
-        
+     
+//    нормально ли делать switch внутри switch
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         profileService.fetchProfile(token) { [weak self] result in
@@ -59,7 +55,19 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success:
                 self.switchToTabBarController()
-                
+                guard let username = profileService.profile?.username else { return }
+                ProfileImageService.shared.fetchProfileImageURL(username: username) {
+    //                [weak self]
+                    result in
+    //                guard let self = self else { return }
+                    switch result {
+                    case .success(let avatarURL):
+                        print(avatarURL)
+                    case .failure(let error):
+                        print(error)
+                        break
+                    }
+                }
             case .failure(let error):
                 print(error)
                 break
@@ -88,6 +96,10 @@ extension SplashViewController {
             switch result {
             case .success:
                 self.switchToTabBarController()
+                guard let token = storage.token else {
+                    return
+                }
+                self.fetchProfile(token)
             case .failure:
                 // TODO
                 break
