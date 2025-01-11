@@ -44,24 +44,20 @@ final class OAuth2Service {
         lastCode = code
         guard let URLRequest = makeOAuthTokenRequest(code: code)
         else {
+            print("[fetchOAuthToken]: AuthServiceError.invalidRequest")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
-        let task = URLSession.shared.data(for: URLRequest){ [weak self]
-                result in
+        let task = URLSession.shared.objectTask(for: URLRequest){ [weak self]
+            (result: Result<OAuthTokenResponseBody, Error>) in
                 switch result {
-                case .success(let data):
-                    do {
-                        let token = try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data)
-                        OAuth2TokenStorage().token = token.access_token
-                        completion(.success("Success"))
-                    } catch {
-                        completion(.failure(error))
-                    }
+                case .success(let responseBody):
+                    OAuth2TokenStorage().token = responseBody.access_token
+                    completion(.success("success"))
                 case .failure(let error):
                     completion(.failure(error))
                 }
-                
+            
                 DispatchQueue.main.async {
                             self?.task = nil
                             self?.lastCode = nil

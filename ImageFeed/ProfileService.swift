@@ -13,23 +13,18 @@ final class ProfileService {
         let url = URL(string: "https://api.unsplash.com/me")!
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        let task = URLSession.shared.data(for: request){ [weak self]
-            result in
+        let task = URLSession.shared.objectTask(for: request){ [weak self]
+            (result: Result<ProfileResult, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let ProfileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
-                    let profile = Profile(
-                        username: ProfileResult.username,
-                        first_name: ProfileResult.first_name,
-                        last_name: ProfileResult.last_name,
-                        bio: ProfileResult.bio
-                    )
-                    self?.profile = profile
-                    completion(.success(profile))
-                } catch {
-                    completion(.failure(error))
-                }
+            case .success(let responseBody):
+                let profile = Profile(
+                    username: responseBody.username,
+                    first_name: responseBody.first_name,
+                    last_name: responseBody.last_name,
+                    bio: responseBody.bio
+                )
+                self?.profile = profile
+                completion(.success(profile))
             case .failure(let error):
                 completion(.failure(error))
             }

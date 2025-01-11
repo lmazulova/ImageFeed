@@ -101,7 +101,14 @@ extension SplashViewController {
                 }
                 self.fetchProfile(token)
             case .failure:
-                // TODO
+                let alert = UIAlertController(
+                        title: "Что-то пошло не так(",
+                        message: "Не удалось войти в систему",
+                        preferredStyle: .alert
+                    )
+                    let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+                    alert.addAction(okAction)
+                    self.present(alert, animated: true, completion: nil)
                 break
             }
         }

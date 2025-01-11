@@ -18,13 +18,11 @@ final class ProfileImageService {
         let url = URL(string: "https://api.unsplash.com/users/\(username)")!
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        let task = URLSession.shared.data(for: request){ [weak self]
-            result in
+        let task = URLSession.shared.objectTask(for: request){ [weak self]
+            (result: Result<UserProfile, Error>) in
             switch result {
-            case .success(let data):
-                do {
-                    let UserProfile = try JSONDecoder().decode(UserProfile.self, from: data)
-                    let avatarURL = UserProfile.profileImage.small
+            case .success(let responseBody):
+                    let avatarURL = responseBody.profileImage.small
                     self?.avatarURL = avatarURL
                     completion(.success(avatarURL))
                     NotificationCenter.default
@@ -32,13 +30,10 @@ final class ProfileImageService {
                             name: ProfileImageService.didChangeNotification,
                             object: self,
                             userInfo: ["URL": avatarURL])
-                } catch {
-                    completion(.failure(error))
-                }
             case .failure(let error):
                 completion(.failure(error))
             }
-            
+
             DispatchQueue.main.async {
                         self?.task = nil
             }
