@@ -1,9 +1,3 @@
-//
-//  ProfileViewController.swift
-//  ImageFeed
-//
-//  Created by user on 06.12.2024.
-//
 
 import UIKit
 
@@ -21,7 +15,10 @@ final class ProfileViewController: UIViewController {
         return label
     }
     
-    func addImageView(image: UIImage) -> UIImageView {
+    func addImageView(imageName: String) -> UIImageView {
+        guard let image = UIImage(named: imageName) else {
+            fatalError("Ошибка: изображение '\(imageName)' не найдено")
+        }
         let imgView = UIImageView(image: image)
         imgView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imgView)
@@ -29,7 +26,10 @@ final class ProfileViewController: UIViewController {
         return imgView
     }
     
-    func addButton(image: UIImage) -> UIButton {
+    func addButton(imageName: String) -> UIButton {
+        guard let image = UIImage(named: imageName) else {
+            fatalError("Ошибка: изображение '\(imageName)' не найдено")
+        }
         let button = UIButton.systemButton(with: image, target: self, action: #selector(Self.didTapButton))
         button.tintColor = .ypRed
         button.contentMode = .scaleAspectFit
@@ -46,8 +46,8 @@ final class ProfileViewController: UIViewController {
         let tag = addLabel(text: "@ekaterina_nov")
         tag.textColor = .ypGrey
         let description = addLabel(text: "Hello, world!")
-        let profile = addImageView(image: UIImage(named: "profilePhoto")!)
-        let exitButton = addButton(image: UIImage(named: "Exit")!)
+        let profile = addImageView(imageName: "profilePhoto")
+        let exitButton = addButton(imageName: "Exit")
         
         NSLayoutConstraint.activate([
             profile.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),

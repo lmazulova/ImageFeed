@@ -1,9 +1,3 @@
-//
-//  SingleImageViewController.swift
-//  ImageFeed
-//
-//  Created by user on 10.12.2024.
-//
 
 import UIKit
 final class SingleImageViewController: UIViewController {
@@ -19,9 +13,9 @@ final class SingleImageViewController: UIViewController {
     }
     
     // MARK: - IB Outlets
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var sharingBtn: UIButton!
+    @IBOutlet weak private var backButton: UIButton!
+    @IBOutlet weak private var scrollView: UIScrollView!
+    @IBOutlet weak private var sharingBtn: UIButton!
     @IBOutlet weak private var imageView: UIImageView!
     
     // MARK: - IB Actions
@@ -44,12 +38,6 @@ final class SingleImageViewController: UIViewController {
         imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        guard let image = image else { return }
-        centerImageInScrollView(image: image)
     }
 }
 
@@ -75,6 +63,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
         let wScale = visibleRectSize.width/imageSize.width
         let scale = min(maxZoomScale, max(minZoomScale, max(hScale, wScale)))
         scrollView.setZoomScale(scale, animated: false)
+        centerImageInScrollView(image: image)
         scrollView.layoutIfNeeded()
     }
     
@@ -84,7 +73,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
         let newContentSize = scrollView.contentSize
         let horizontalInset = (visibleRectSize.width - newContentSize.width) / 2
         let verticalInset = (visibleRectSize.height - newContentSize.height) / 2
-    
+        
         scrollView.contentInset = UIEdgeInsets(
             top: verticalInset,
             left: horizontalInset,
