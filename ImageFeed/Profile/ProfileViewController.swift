@@ -17,17 +17,6 @@ final class ProfileViewController: UIViewController {
         return label
     }
     
-    func addImageView(imageName: String) -> UIImageView {
-        guard let image = UIImage(named: imageName) else {
-            fatalError("Ошибка: изображение '\(imageName)' не найдено")
-        }
-        let imgView = UIImageView(image: image)
-        imgView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imgView)
-        imgView.contentMode = .scaleAspectFit
-        return imgView
-    }
-    
     func addButton(imageName: String) -> UIButton {
         guard let image = UIImage(named: imageName) else {
             fatalError("Ошибка: изображение '\(imageName)' не найдено")
@@ -53,7 +42,7 @@ final class ProfileViewController: UIViewController {
                 guard let self = self else {return}
                 self.updateAvatar()
             }
-        updateAvatar()
+        self.updateAvatar()
         guard let profile = ProfileService.shared.profile else {return}
         self.updateProfileDetails(profile: profile)
     }
@@ -64,13 +53,20 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            imageView.widthAnchor.constraint(equalToConstant: 70),
+            imageView.heightAnchor.constraint(equalToConstant: 70)
+        ])
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: url,
-                              placeholder: UIImage(named: "profilePhoto"),
-                              options: [.processor(processor)])
+                              placeholder: UIImage(named: "userAvatar"))
     }
     
     private func updateProfileDetails(profile: Profile) {
@@ -79,19 +75,14 @@ final class ProfileViewController: UIViewController {
         let tag = self.addLabel(text: profile.loginName)
         tag.textColor = .ypGrey
         let description = self.addLabel(text: profile.bio)
-        let profile = self.addImageView(imageName: "profilePhoto")
         let exitButton = self.addButton(imageName: "Exit")
         
         NSLayoutConstraint.activate([
-            profile.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            profile.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            profile.heightAnchor.constraint(equalToConstant: 70),
-            profile.widthAnchor.constraint(equalToConstant: 70),
-            name.topAnchor.constraint(equalTo: profile.bottomAnchor, constant: 8),
+            name.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 110),
             tag.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 8),
             description.topAnchor.constraint(equalTo: tag.bottomAnchor, constant: 8),
             exitButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
-            exitButton.centerYAnchor.constraint(equalTo: profile.centerYAnchor),
+            exitButton.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 55),
             exitButton.heightAnchor.constraint(equalToConstant: 22),
             exitButton.widthAnchor.constraint(equalToConstant: 20)
         ])

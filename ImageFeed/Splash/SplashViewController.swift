@@ -22,14 +22,26 @@ final class SplashViewController: UIViewController {
     // MARK: - Override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        let launchImage = UIImage(named: "LaunchImage")
+        let logoView = UIImageView(image: launchImage)
+        logoView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoView)
+        NSLayoutConstraint.activate([
+            logoView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
+            logoView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0)
+        ])
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let token = storage.token {
+            print(token)
             self.fetchProfile(token)
-//            switchToTabBarController()
         } else {
-            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            let viewController = AuthViewController()
+            viewController.delegate = self
+            viewController.modalPresentationStyle = .fullScreen
+            present(viewController, animated: true, completion: nil)
+//            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
 }
@@ -38,8 +50,12 @@ final class SplashViewController: UIViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController, code: String) {
         UIBlockingProgressHUD.show()
+        print(#line)
         vc.dismiss(animated: true) { [weak self] in
-            guard let self = self else {return}
+            print(#line)
+            guard let self = self else {
+                print(#line)
+                return}
             self.fetchOAuthToken(code)
         }
     }
@@ -51,15 +67,15 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             
             guard let self = self else { return }
-            
+            print(self)
             switch result {
             case .success:
                 self.switchToTabBarController()
                 guard let username = profileService.profile?.username else { return }
                 ProfileImageService.shared.fetchProfileImageURL(username: username) {
-        //                [weak self]
+//                        [weak self]
                     result in
-        //                guard let self = self else { return }
+//                        guard let self = self else { return }
                     switch result {
                     case .success(let avatarURL):
                         print(avatarURL)
@@ -78,24 +94,23 @@ extension SplashViewController: AuthViewControllerDelegate {
 
 // MARK: - Extensions
 extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == showAuthenticationScreenSegueIdentifier {
+//            guard
+//                let navigationController = segue.destination as? UINavigationController,
+//                let viewController = navigationController.viewControllers[0] as? AuthViewController
+//            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
+//            viewController.delegate = self
+//        } else {
+//            super.prepare(for: segue, sender: sender)
+//        }
+//    }
     private func fetchOAuthToken(_ code: String) {
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
-                self.switchToTabBarController()
                 guard let token = storage.token else {
                     return
                 }

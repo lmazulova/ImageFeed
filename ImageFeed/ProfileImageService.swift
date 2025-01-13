@@ -22,7 +22,7 @@ final class ProfileImageService {
             (result: Result<UserProfile, Error>) in
             switch result {
             case .success(let responseBody):
-                    let avatarURL = responseBody.profileImage.small
+                    let avatarURL = responseBody.profileImage.medium
                     self?.avatarURL = avatarURL
                     completion(.success(avatarURL))
                     NotificationCenter.default
@@ -53,5 +53,5 @@ struct UserProfile: Codable {
 
 // MARK: - ProfileImage
 struct ProfileImage: Codable {
-    let small: String
+    let medium: String
 }
