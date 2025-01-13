@@ -95,7 +95,7 @@ extension ImagesListViewController {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         applyGradient(to: cell.gradientView)
-        guard let image = UIImage(named: photosName[indexPath.row]) else {return}
+        guard let image = UIImage(named: photosName[indexPath.row]) else { return }
         cell.ImageView.image = image
         cell.dataLabel.text = dateFormatter.string(from: Date())
         cell.likeButton.imageView?.image = UIImage(named: indexPath.row % 2 == 0 ? "activeLike" : "inactiveLike")

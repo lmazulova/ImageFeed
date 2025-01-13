@@ -19,29 +19,29 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet weak private var imageView: UIImageView!
     
     // MARK: - IB Actions
-    @IBAction func didTapBackButton(_ sender: Any) {
+    @IBAction private func didTapBackButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    @IBAction func didTapShareButton(_ sender: Any) {
-        guard let image else {return}
+    @IBAction private func didTapShareButton(_ sender: Any) {
+        guard let image else { return }
         let share = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(share, animated: true, completion: nil)
     }
     
-    // MARK: - override Methods
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         sharingBtn.setTitle("", for: .normal)
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
-        guard let image = image else {return}
+        guard let image = image else { return }
         imageView.image = image
         imageView.frame.size = image.size
         rescaleAndCenterImageInScrollView(image: image)
     }
 }
 
-// MARK: - Extensions
+// MARK: - UIScrollViewDelegate
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -49,7 +49,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        guard let image = image else {return}
+        guard let image = image else { return }
         centerImageInScrollView(image: image)
     }
     

@@ -7,17 +7,18 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    let identifierWeb = "ShowWebView"
+    
+    private let identifierWeb = "ShowWebView"
     
     // MARK: - IB Outlets
-    @IBOutlet weak var loginBtn: UIButton!
+    @IBOutlet weak private var loginBtn: UIButton!
     
     // MARK: - Delegate
     weak var delegate: AuthViewControllerDelegate?
     
     // MARK: - Private Methods
     private func configureBackButton(imageName: String) {
-        guard let image = UIImage(named: imageName) else {return}
+        guard let image = UIImage(named: imageName) else { return }
         navigationController?.navigationBar.backIndicatorImage = image
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = image
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)

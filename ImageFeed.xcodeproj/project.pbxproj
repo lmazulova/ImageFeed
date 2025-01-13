@@ -16,6 +16,7 @@
 		CE381CBB2D034AB800E222EE /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE381CBA2D034AB800E222EE /* ProfileViewController.swift */; };
 		CE3EA1072D35452200C58988 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = CE3EA1062D35452200C58988 /* SwiftKeychainWrapper */; };
 		CE3EA1092D35532B00C58988 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3EA1082D35532B00C58988 /* TabBarController.swift */; };
+		CE3EA10B2D35741C00C58988 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3EA10A2D35741C00C58988 /* NavigationController.swift */; };
 		CE65C1192CF2A25D009C8669 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE8EE4092CEF891600288074 /* Main.storyboard */; };
 		CE812ABA2D086496006DA3B4 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE812AB92D086496006DA3B4 /* SingleImageViewController.swift */; };
 		CE8EE4042CEF891600288074 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8EE4032CEF891600288074 /* AppDelegate.swift */; };
@@ -42,6 +43,7 @@
 		CE229EAE2CF208FA00333100 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		CE381CBA2D034AB800E222EE /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CE3EA1082D35532B00C58988 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		CE3EA10A2D35741C00C58988 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		CE812AB92D086496006DA3B4 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		CE8EE4002CEF891600288074 /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE8EE4032CEF891600288074 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				CE1B6C8D2D2F0D15000A1BA7 /* ProfileService.swift */,
 				CE1B6C8F2D2FFF64000A1BA7 /* ProfileImageService.swift */,
 				CE3EA1082D35532B00C58988 /* TabBarController.swift */,
+				CE3EA10A2D35741C00C58988 /* NavigationController.swift */,
 				CE8EE40C2CEF891800288074 /* Assets.xcassets */,
 				CE8EE4092CEF891600288074 /* Main.storyboard */,
 				CE8EE40E2CEF891800288074 /* LaunchScreen.storyboard */,
@@ -269,6 +272,7 @@
 				CEBB7A792D1F55A2002EFC93 /* SplashViewController.swift in Sources */,
 				CED37DF22D1325FB00EC4F54 /* AuthViewController.swift in Sources */,
 				CE1B6C8C2D2F0902000A1BA7 /* UIBlockingProgressHUD.swift in Sources */,
+				CE3EA10B2D35741C00C58988 /* NavigationController.swift in Sources */,
 				CE8EE4042CEF891600288074 /* AppDelegate.swift in Sources */,
 				CEBB7A752D15D2BA002EFC93 /* URLSession+data.swift in Sources */,
 				CE812ABA2D086496006DA3B4 /* SingleImageViewController.swift in Sources */,

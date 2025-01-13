@@ -19,8 +19,8 @@ final class ProfileService {
             case .success(let responseBody):
                 let profile = Profile(
                     username: responseBody.username,
-                    first_name: responseBody.first_name,
-                    last_name: responseBody.last_name,
+                    firstName: responseBody.firstName,
+                    lastName: responseBody.lastName,
                     bio: responseBody.bio
                 )
                 self?.profile = profile
@@ -30,7 +30,7 @@ final class ProfileService {
             }
             
             DispatchQueue.main.async {
-                        self?.task = nil
+                self?.task = nil
             }
         }
         self.task = task
@@ -40,24 +40,31 @@ final class ProfileService {
 
 struct ProfileResult: Codable {
     let username: String?
-    let first_name: String?
-    let last_name: String?
+    let firstName: String?
+    let lastName: String?
     let bio: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case username = "username"
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case bio = "bio"
+    }
 }
 
 struct Profile {
     let username: String?
-    let first_name: String?
-    let last_name: String?
+    let firstName: String?
+    let lastName: String?
     var name: String? {
-        if let first_name = self.first_name, let last_name = self.last_name {
-           return (first_name + " " + last_name)
+        if let firstName = self.firstName, let last_name = self.lastName {
+            return (firstName + " " + last_name)
         }
-        else if let first_name = self.first_name {
-            return first_name
+        else if let firstName = self.firstName {
+            return firstName
         }
-        else if let last_name = self.last_name {
-            return last_name
+        else if let lastName = self.lastName {
+            return lastName
         }
         else {
             return nil

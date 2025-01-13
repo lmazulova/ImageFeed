@@ -3,10 +3,9 @@ import UIKit
 import Kingfisher
 
 final class ProfileViewController: UIViewController {
-    
     private var profileImageServiceObserver: NSObjectProtocol?
     // MARK: - views
-    func addLabel(text: String?) -> UILabel{
+    private func addLabel(text: String?) -> UILabel{
         let label = UILabel()
         label.text = text
         label.textColor = .ypWhite
@@ -17,9 +16,10 @@ final class ProfileViewController: UIViewController {
         return label
     }
     
-    func addButton(imageName: String) -> UIButton {
+    private func addButton(imageName: String) -> UIButton {
         guard let image = UIImage(named: imageName) else {
-            fatalError("Ошибка: изображение '\(imageName)' не найдено")
+            assertionFailure("Ошибка: изображение '\(imageName)' не найдено")
+            return UIButton(type: .system)
         }
         let button = UIButton.systemButton(with: image, target: self, action: #selector(Self.didTapButton))
         button.tintColor = .ypRed
@@ -39,14 +39,15 @@ final class ProfileViewController: UIViewController {
                 object: nil,
                 queue: .main
             ) { [weak self] _ in
-                guard let self = self else {return}
+                guard let self = self else { return }
                 self.updateAvatar()
             }
         self.updateAvatar()
-        guard let profile = ProfileService.shared.profile else {return}
+        guard let profile = ProfileService.shared.profile else { return }
         self.updateProfileDetails(profile: profile)
     }
     
+    // MARK: - private Methods
     private func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,

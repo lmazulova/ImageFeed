@@ -61,5 +61,9 @@ extension URLSession {
 }
 
 struct OAuthTokenResponseBody: Decodable {
-    let access_token: String
+    let accessToken: String
+    
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+    }
 }

@@ -1,11 +1,11 @@
 
 import UIKit
 import ProgressHUD
+import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     // MARK: - Private Properties
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    private let storage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
     
     // MARK: - Private Methods
@@ -16,16 +16,18 @@ final class SplashViewController: UIViewController {
         }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
+        //        window.makeKeyAndVisible()
         
     }
     
-    // MARK: - Override Methods
+    // MARK: - View controller lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         let launchImage = UIImage(named: "LaunchImage")
         let logoView = UIImageView(image: launchImage)
         logoView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoView)
+        view.backgroundColor = .ypBlack
         NSLayoutConstraint.activate([
             logoView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
             logoView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0)
@@ -33,15 +35,16 @@ final class SplashViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let token = storage.token {
-            print(token)
+        //        let eksf = KeychainWrapper.standard.removeObject(forKey: "OAuth2TokenKey")
+        if let token = OAuth2TokenStorage.shared.token {
             self.fetchProfile(token)
         } else {
-            let viewController = AuthViewController()
-            viewController.delegate = self
-            viewController.modalPresentationStyle = .fullScreen
-            present(viewController, animated: true, completion: nil)
-//            performSegue(withIdentifier: showAuthenticationScreenSegueIdentifier, sender: nil)
+            if let navigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NavigationController") as? NavigationController {
+                guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else { return }
+                viewController.delegate = self
+                navigationController.modalPresentationStyle = .fullScreen
+                present(navigationController, animated: true, completion: nil)
+            }
         }
     }
 }
@@ -55,12 +58,11 @@ extension SplashViewController: AuthViewControllerDelegate {
             print(#line)
             guard let self = self else {
                 print(#line)
-                return}
+                return }
             self.fetchOAuthToken(code)
         }
     }
-     
-//    нормально ли делать switch внутри switch
+    
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
         profileService.fetchProfile(token) { [weak self] result in
@@ -72,10 +74,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success:
                 self.switchToTabBarController()
                 guard let username = profileService.profile?.username else { return }
-                ProfileImageService.shared.fetchProfileImageURL(username: username) {
-//                        [weak self]
-                    result in
-//                        guard let self = self else { return }
+                ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
                     switch result {
                     case .success(let avatarURL):
                         print(avatarURL)
@@ -94,36 +93,23 @@ extension SplashViewController: AuthViewControllerDelegate {
 
 // MARK: - Extensions
 extension SplashViewController {
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == showAuthenticationScreenSegueIdentifier {
-//            guard
-//                let navigationController = segue.destination as? UINavigationController,
-//                let viewController = navigationController.viewControllers[0] as? AuthViewController
-//            else { fatalError("Failed to prepare for \(showAuthenticationScreenSegueIdentifier)") }
-//            viewController.delegate = self
-//        } else {
-//            super.prepare(for: segue, sender: sender)
-//        }
-//    }
     private func fetchOAuthToken(_ code: String) {
         OAuth2Service.shared.fetchOAuthToken(code: code) { [weak self] result in
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
             case .success:
-                guard let token = storage.token else {
-                    return
-                }
+                guard let token = OAuth2TokenStorage.shared.token else { return }
                 self.fetchProfile(token)
             case .failure:
                 let alert = UIAlertController(
-                        title: "Что-то пошло не так(",
-                        message: "Не удалось войти в систему",
-                        preferredStyle: .alert
-                    )
-                    let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
-                    alert.addAction(okAction)
-                    self.present(alert, animated: true, completion: nil)
+                    title: "Что-то пошло не так(",
+                    message: "Не удалось войти в систему",
+                    preferredStyle: .alert
+                )
+                let okAction = UIAlertAction(title: "Ок", style: .default, handler: nil)
+                alert.addAction(okAction)
+                self.present(alert, animated: true, completion: nil)
                 break
             }
         }

@@ -50,20 +50,20 @@ final class OAuth2Service {
         }
         let task = URLSession.shared.objectTask(for: URLRequest){ [weak self]
             (result: Result<OAuthTokenResponseBody, Error>) in
-                switch result {
-                case .success(let responseBody):
-                    OAuth2TokenStorage().token = responseBody.access_token
-                    completion(.success("success"))
-                case .failure(let error):
-                    completion(.failure(error))
-                }
-            
-                DispatchQueue.main.async {
-                            self?.task = nil
-                            self?.lastCode = nil
-                }
+            switch result {
+            case .success(let responseBody):
+                OAuth2TokenStorage.shared.token = responseBody.accessToken
+                completion(.success("success"))
+            case .failure(let error):
+                completion(.failure(error))
             }
-            self.task = task
-            task.resume()
+            
+            DispatchQueue.main.async {
+                self?.task = nil
+                self?.lastCode = nil
+            }
+        }
+        self.task = task
+        task.resume()
     }
 }
