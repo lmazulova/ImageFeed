@@ -38,11 +38,12 @@ final class SplashViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let _ = KeychainWrapper.standard.removeObject(forKey: "OAuth2TokenKey")
+//        let _ = KeychainWrapper.standard.removeObject(forKey: "OAuth2TokenKey")
         if let token = OAuth2TokenStorage.shared.token {
             self.fetchProfile(token)
         } else {
-            let AuthViewController = AuthViewController() // или любой другой контроллер
+            let AuthViewController = AuthViewController()
+            AuthViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: AuthViewController)
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true, completion: nil)
