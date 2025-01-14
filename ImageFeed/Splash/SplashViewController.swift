@@ -1,7 +1,7 @@
 
 import UIKit
 import ProgressHUD
-
+import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     // MARK: - Private Properties
@@ -38,6 +38,7 @@ final class SplashViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        let _ = KeychainWrapper.standard.removeObject(forKey: "OAuth2TokenKey")
         if let token = OAuth2TokenStorage.shared.token {
             self.fetchProfile(token)
         } else {

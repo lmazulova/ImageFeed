@@ -10,9 +10,6 @@ final class AuthViewController: UIViewController {
     
     private let identifierWeb = "ShowWebView"
     
-    // MARK: - IB Outlets
-    @IBOutlet weak private var loginBtn: UIButton!
-    
     // MARK: - Delegate
     weak var delegate: AuthViewControllerDelegate?
     
@@ -23,6 +20,20 @@ final class AuthViewController: UIViewController {
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = image
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem?.tintColor = UIColor(named: "YP black")
+    }
+    
+    private func configureImageView(image: UIImage?) {
+        guard let image = image else { return }
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        view.backgroundColor = .ypBlack
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
+            imageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0),
+            imageView.widthAnchor.constraint(equalToConstant: 60),
+            imageView.heightAnchor.constraint(equalToConstant: 60)
+        ])
     }
     
     private func configureButton(text: String) {
@@ -41,9 +52,9 @@ final class AuthViewController: UIViewController {
         view.addSubview(button)
         
         NSLayoutConstraint.activate([
-            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 16),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 90),
-            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
+            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             button.heightAnchor.constraint(equalToConstant: 48)
             ])
     }
@@ -56,7 +67,8 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackButton(imageName: "nav_back_button")
-        
+        configureButton(text: "Войти")
+        configureImageView(image: UIImage(named: "authScreenLogo"))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
