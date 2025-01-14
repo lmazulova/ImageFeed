@@ -37,6 +37,7 @@ final class OAuth2Service {
     func fetchOAuthToken(code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard lastCode != code else {
+            print("[fetchOAuthToken]: AuthServiceError.invalidRequest")
             completion(.failure(AuthServiceError.invalidRequest))
             return
         }
@@ -55,6 +56,7 @@ final class OAuth2Service {
                 OAuth2TokenStorage.shared.token = responseBody.accessToken
                 completion(.success("success"))
             case .failure(let error):
+                print("[AuthServiceError.fetchOAuthToken] - \(error)")
                 completion(.failure(error))
             }
             

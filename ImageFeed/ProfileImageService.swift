@@ -19,10 +19,11 @@ final class ProfileImageService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let task = URLSession.shared.objectTask(for: request){ [weak self]
             (result: Result<UserProfile, Error>) in
+            guard let self = self else { return }
             switch result {
             case .success(let responseBody):
                 let avatarURL = responseBody.profileImage.medium
-                self?.avatarURL = avatarURL
+                self.avatarURL = avatarURL
                 completion(.success(avatarURL))
                 NotificationCenter.default
                     .post(
@@ -30,11 +31,12 @@ final class ProfileImageService {
                         object: self,
                         userInfo: ["URL": avatarURL])
             case .failure(let error):
+                print("[fetchProfileImageURL] - \(error)")
                 completion(.failure(error))
             }
             
             DispatchQueue.main.async {
-                self?.task = nil
+                self.task = nil
             }
         }
         self.task = task

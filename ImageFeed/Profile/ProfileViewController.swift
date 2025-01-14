@@ -18,7 +18,7 @@ final class ProfileViewController: UIViewController {
     
     private func addButton(imageName: String) -> UIButton {
         guard let image = UIImage(named: imageName) else {
-            assertionFailure("Ошибка: изображение '\(imageName)' не найдено")
+            assertionFailure("[ProfileViewController.addButton] - Error: изображение '\(imageName)' не найдено")
             return UIButton(type: .system)
         }
         let button = UIButton.systemButton(with: image, target: self, action: #selector(Self.didTapButton))

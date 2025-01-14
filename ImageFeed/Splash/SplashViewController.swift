@@ -1,7 +1,7 @@
 
 import UIKit
 import ProgressHUD
-import SwiftKeychainWrapper
+
 
 final class SplashViewController: UIViewController {
     // MARK: - Private Properties
@@ -16,26 +16,28 @@ final class SplashViewController: UIViewController {
         }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
-        //        window.makeKeyAndVisible()
-        
+    }
+    
+    // MARK: - views
+    private func configureImageView(image: UIImage?) {
+        guard let image = image else { return }
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        view.backgroundColor = .ypBlack
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
+            imageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0)
+        ])
     }
     
     // MARK: - View controller lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        let launchImage = UIImage(named: "LaunchImage")
-        let logoView = UIImageView(image: launchImage)
-        logoView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(logoView)
-        view.backgroundColor = .ypBlack
-        NSLayoutConstraint.activate([
-            logoView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
-            logoView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0)
-        ])
+        configureImageView(image: UIImage(named: "LaunchImage"))
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //        let eksf = KeychainWrapper.standard.removeObject(forKey: "OAuth2TokenKey")
         if let token = OAuth2TokenStorage.shared.token {
             self.fetchProfile(token)
         } else {
@@ -53,12 +55,8 @@ final class SplashViewController: UIViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     func didAuthenticate(_ vc: AuthViewController, code: String) {
         UIBlockingProgressHUD.show()
-        print(#line)
         vc.dismiss(animated: true) { [weak self] in
-            print(#line)
-            guard let self = self else {
-                print(#line)
-                return }
+            guard let self = self else { return }
             self.fetchOAuthToken(code)
         }
     }
