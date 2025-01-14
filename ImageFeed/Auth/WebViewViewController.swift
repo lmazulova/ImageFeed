@@ -20,7 +20,7 @@ final class WebViewViewController: UIViewController {
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-            ])
+        ])
         return webView
     }
     
@@ -33,7 +33,7 @@ final class WebViewViewController: UIViewController {
             progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-            ])
+        ])
         
         return progressView
     }
@@ -59,7 +59,7 @@ final class WebViewViewController: UIViewController {
     // MARK: - Private Methods
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: webViewConstants.unsplashAuthorizeURLString) else {
-            print("Invalid authorization URL")
+            print("[WebViewViewController.loadAuthView] - Invalid authorization URL")
             return
         }
         urlComponents.queryItems = [
@@ -69,7 +69,7 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         guard let url = urlComponents.url else {
-            print("Failed to construct URL. Wrong query items.")
+            print("[WebViewViewController.loadAuthView] - Failed to construct URL. Wrong query items.")
             return
         }
         let request = URLRequest(url: url)

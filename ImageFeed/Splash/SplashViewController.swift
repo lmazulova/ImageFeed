@@ -1,12 +1,14 @@
 
 import UIKit
 import ProgressHUD
-import SwiftKeychainWrapper
 
 final class SplashViewController: UIViewController {
     // MARK: - Private Properties
     private let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     private let profileService = ProfileService.shared
+    
+    //   isAuthenticating нужно чтобы при повторном заходе в метод viewDidAppear SplashViewControllerа класс AuthViewController не создавался заново
+    private var isAuthenticating = false
     
     // MARK: - Private Methods
     private func switchToTabBarController() {
@@ -38,10 +40,11 @@ final class SplashViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        let _ = KeychainWrapper.standard.removeObject(forKey: "OAuth2TokenKey")
+        if isAuthenticating { return }
         if let token = OAuth2TokenStorage.shared.token {
             self.fetchProfile(token)
         } else {
+            isAuthenticating = true
             let AuthViewController = AuthViewController()
             AuthViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: AuthViewController)
@@ -67,23 +70,20 @@ extension SplashViewController: AuthViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             
             guard let self = self else { return }
-            print(self)
             switch result {
             case .success:
                 self.switchToTabBarController()
                 guard let username = profileService.profile?.username else { return }
                 ProfileImageService.shared.fetchProfileImageURL(username: username) { result in
                     switch result {
-                    case .success(let avatarURL):
-                        print(avatarURL)
-                    case .failure(let error):
-                        print(error)
+                    case .success(_):
                         break
+                    case .failure(_):
+                        self.isAuthenticating = false
                     }
                 }
-            case .failure(let error):
-                print(error)
-                break
+            case .failure(_):
+                self.isAuthenticating = false
             }
         }
     }
@@ -100,6 +100,7 @@ extension SplashViewController {
                 guard let token = OAuth2TokenStorage.shared.token else { return }
                 self.fetchProfile(token)
             case .failure:
+                self.isAuthenticating = false
                 let alert = UIAlertController(
                     title: "Что-то пошло не так(",
                     message: "Не удалось войти в систему",

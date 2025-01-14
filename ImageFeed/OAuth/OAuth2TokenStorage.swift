@@ -4,7 +4,7 @@ import SwiftKeychainWrapper
 final class OAuth2TokenStorage {
     static let shared = OAuth2TokenStorage()
     private init() {}
-
+    
     private var tokenKey = "OAuth2TokenKey"
     var token: String? {
         get {

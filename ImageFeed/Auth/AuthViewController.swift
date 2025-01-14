@@ -7,8 +7,6 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-//    
-//    private let identifierWeb = "ShowWebView"
     // MARK: - Delegate
     weak var delegate: AuthViewControllerDelegate?
     
@@ -55,7 +53,7 @@ final class AuthViewController: UIViewController {
             button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             button.heightAnchor.constraint(equalToConstant: 48)
-            ])
+        ])
     }
     
     @objc private func buttonTapped() {
@@ -71,19 +69,6 @@ final class AuthViewController: UIViewController {
         configureButton(text: "Войти")
         configureImageView(image: UIImage(named: "authScreenLogo"))
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == identifierWeb {
-//            guard let viewController = segue.destination as? WebViewViewController
-//            else {
-//                assertionFailure("Invalid segue destination")
-//                return
-//            }
-//            viewController.delegate = self
-//        } else {
-//            super.prepare(for: segue, sender: sender)
-//        }
-//    }
 }
 
 // MARK: - WebViewViewControllerDelegate

@@ -15,7 +15,7 @@ final class OAuth2Service {
     
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard var baseUrl = URLComponents(string: "https://unsplash.com/oauth/token") else {
-            print("Invalid host name")
+            print("[OAuth2Service.makeOAuthTokenRequest] - Invalid host name")
             return nil
         }
         baseUrl.queryItems = [
@@ -26,7 +26,7 @@ final class OAuth2Service {
             URLQueryItem(name: "grant_type", value: "authorization_code")
         ]
         guard let url = baseUrl.url else {
-            print("Failed to construct URL. Wrong query items.")
+            print("[OAuth2Service.makeOAuthTokenRequest] - Failed to construct URL. Wrong query items.")
             return nil
         }
         var request = URLRequest(url: url)
