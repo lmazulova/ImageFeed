@@ -7,6 +7,7 @@ enum webViewConstants {
 
 final class WebViewViewController: UIViewController {
     private var estimateProgressObservation: NSKeyValueObservation?
+    private var webView: WKWebView!
     
     // MARK: - views
     private func configureWebView() -> WKWebView {
@@ -43,19 +44,20 @@ final class WebViewViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        let webView = configureWebView()
+        view.backgroundColor = .ypWhite
+        webView = configureWebView()
         let progressView = configureProgressView()
-        loadAuthView(webView: webView)
+        loadAuthView()
         estimateProgressObservation = webView.observe(
             \.estimatedProgress,
              options: [],
              changeHandler: { [weak self] _, _ in
                  guard let self = self else { return }
-                 self.updateProgress(webView: webView, progressView: progressView)
+                 self.updateProgress(progressView: progressView)
              })
     }
     // MARK: - Private Methods
-    private func loadAuthView(webView: WKWebView) {
+    private func loadAuthView() {
         guard var urlComponents = URLComponents(string: webViewConstants.unsplashAuthorizeURLString) else {
             print("Invalid authorization URL")
             return
@@ -74,7 +76,7 @@ final class WebViewViewController: UIViewController {
         webView.load(request)
     }
     
-    private func updateProgress(webView: WKWebView, progressView: UIProgressView) {
+    private func updateProgress(progressView: UIProgressView) {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }

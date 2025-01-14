@@ -42,12 +42,10 @@ final class SplashViewController: UIViewController {
         if let token = OAuth2TokenStorage.shared.token {
             self.fetchProfile(token)
         } else {
-            if let navigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NavigationController") as? NavigationController {
-                guard let viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else { return }
-                viewController.delegate = self
-                navigationController.modalPresentationStyle = .fullScreen
-                present(navigationController, animated: true, completion: nil)
-            }
+            let AuthViewController = AuthViewController() // или любой другой контроллер
+            let navigationController = UINavigationController(rootViewController: AuthViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         }
     }
 }

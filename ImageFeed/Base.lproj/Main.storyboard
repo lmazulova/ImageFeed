@@ -211,57 +211,6 @@
             </objects>
             <point key="canvasLocation" x="-1185" y="294"/>
         </scene>
-        <!--Auth View Controller-->
-        <scene sceneID="lxC-Oq-WhL">
-            <objects>
-                <viewController storyboardIdentifier="AuthViewController" id="COz-wu-JUK" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="G6c-ga-eIV">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="iv2-Ks-ynX"/>
-                        <color key="backgroundColor" name="YP black"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="bsX-KZ-3e3"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qm1-Ba-VD3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="238.93129770992365" y="1486.6197183098593"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="zez-yX-rep">
-            <objects>
-                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="GdI-ef-EYp" customClass="NavigationController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="DsY-0k-fcP"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mOz-HJ-Xkb">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="COz-wu-JUK" kind="relationship" relationship="rootViewController" id="cJV-W0-nls"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Px4-W8-RJ8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-732" y="1487"/>
-        </scene>
-        <!--Web View View Controller-->
-        <scene sceneID="9GW-Jl-sMI">
-            <objects>
-                <viewController id="Yg6-1A-Yvh" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Hal-gp-eoy">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="FsP-9u-3Nd"/>
-                        <color key="backgroundColor" name="YP White"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="PkS-VF-77n"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Im9-dh-sVW" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1169" y="1487"/>
-        </scene>
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>

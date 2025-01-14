@@ -7,9 +7,8 @@ protocol AuthViewControllerDelegate: AnyObject {
 }
 
 final class AuthViewController: UIViewController {
-    
-    private let identifierWeb = "ShowWebView"
-    
+//    
+//    private let identifierWeb = "ShowWebView"
     // MARK: - Delegate
     weak var delegate: AuthViewControllerDelegate?
     
@@ -61,7 +60,9 @@ final class AuthViewController: UIViewController {
     
     @objc private func buttonTapped() {
         let webViewController = WebViewViewController()
+        webViewController.delegate = self
         navigationController?.pushViewController(webViewController, animated: true)
+        
     }
     // MARK: - Overrides Methods
     override func viewDidLoad() {
@@ -71,18 +72,18 @@ final class AuthViewController: UIViewController {
         configureImageView(image: UIImage(named: "authScreenLogo"))
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == identifierWeb {
-            guard let viewController = segue.destination as? WebViewViewController
-            else {
-                assertionFailure("Invalid segue destination")
-                return
-            }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == identifierWeb {
+//            guard let viewController = segue.destination as? WebViewViewController
+//            else {
+//                assertionFailure("Invalid segue destination")
+//                return
+//            }
+//            viewController.delegate = self
+//        } else {
+//            super.prepare(for: segue, sender: sender)
+//        }
+//    }
 }
 
 // MARK: - WebViewViewControllerDelegate
