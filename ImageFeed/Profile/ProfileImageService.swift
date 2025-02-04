@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
@@ -13,8 +13,9 @@ final class ProfileImageService {
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         task?.cancel()
-        guard let token = OAuth2TokenStorage.shared.token else { return }
-        let url = URL(string: "https://api.unsplash.com/users/\(username)")!
+        guard let token = OAuth2TokenStorage.shared.token,
+              let url = URL(string: "\(Constants.defaultBaseURL)/users/\(username)")
+        else { return }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         let task = URLSession.shared.objectTask(for: request){ [weak self]

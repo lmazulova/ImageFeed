@@ -32,6 +32,8 @@
 		CEBB7A772D1D9E67002EFC93 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBB7A762D1D9E67002EFC93 /* OAuth2TokenStorage.swift */; };
 		CEBB7A792D1F55A2002EFC93 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBB7A782D1F55A2002EFC93 /* SplashViewController.swift */; };
 		CED37DF22D1325FB00EC4F54 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED37DF12D1325FB00EC4F54 /* AuthViewController.swift */; };
+		CEF8E24A2D522EA600B98A90 /* ProfileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E2492D522EA600B98A90 /* ProfileResult.swift */; };
+		CEF8E24C2D522EE600B98A90 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E24B2D522EE600B98A90 /* Profile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +53,6 @@
 		CE8EE40C2CEF891800288074 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE8EE40F2CEF891800288074 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE8EE4112CEF891800288074 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CEAD7AE22D2F019C00295720 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CEBB7A6E2D133197002EFC93 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		CEBB7A702D143BDE002EFC93 /* WebViewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegate.swift; sourceTree = "<group>"; };
 		CEBB7A722D148F4E002EFC93 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
@@ -59,6 +60,8 @@
 		CEBB7A762D1D9E67002EFC93 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		CEBB7A782D1F55A2002EFC93 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		CED37DF12D1325FB00EC4F54 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		CEF8E2492D522EA600B98A90 /* ProfileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResult.swift; sourceTree = "<group>"; };
+		CEF8E24B2D522EE600B98A90 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,11 +123,9 @@
 				CEAD7ADB2D273E6F00295720 /* Profile */,
 				CEBB7A7A2D1F55AA002EFC93 /* Splash */,
 				CEBB7A7B2D1F585E002EFC93 /* OAuth */,
+				CEF8E24D2D522F4100B98A90 /* TabBar */,
 				CEBB7A742D15D2BA002EFC93 /* URLSession+data.swift */,
 				CE1B6C8B2D2F0902000A1BA7 /* UIBlockingProgressHUD.swift */,
-				CE1B6C8D2D2F0D15000A1BA7 /* ProfileService.swift */,
-				CE1B6C8F2D2FFF64000A1BA7 /* ProfileImageService.swift */,
-				CE3EA1082D35532B00C58988 /* TabBarController.swift */,
 				CE8EE40C2CEF891800288074 /* Assets.xcassets */,
 				CE8EE4092CEF891600288074 /* Main.storyboard */,
 				CE8EE40E2CEF891800288074 /* LaunchScreen.storyboard */,
@@ -144,17 +145,13 @@
 		CEAD7ADB2D273E6F00295720 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				CE1B6C8D2D2F0D15000A1BA7 /* ProfileService.swift */,
+				CE1B6C8F2D2FFF64000A1BA7 /* ProfileImageService.swift */,
+				CEF8E24B2D522EE600B98A90 /* Profile.swift */,
+				CEF8E2492D522EA600B98A90 /* ProfileResult.swift */,
 				CE381CBA2D034AB800E222EE /* ProfileViewController.swift */,
 			);
 			path = Profile;
-			sourceTree = "<group>";
-		};
-		CEAD7AE42D2F01AC00295720 /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				CEAD7AE22D2F019C00295720 /* Constants.swift */,
-			);
-			path = Constants;
 			sourceTree = "<group>";
 		};
 		CEBB7A6D2D133114002EFC93 /* Auth */ = {
@@ -182,6 +179,14 @@
 				CEBB7A762D1D9E67002EFC93 /* OAuth2TokenStorage.swift */,
 			);
 			path = OAuth;
+			sourceTree = "<group>";
+		};
+		CEF8E24D2D522F4100B98A90 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				CE3EA1082D35532B00C58988 /* TabBarController.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,7 +272,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE8EE4082CEF891600288074 /* ImagesListViewController.swift in Sources */,
+				CEF8E24C2D522EE600B98A90 /* Profile.swift in Sources */,
 				CE1B6C8E2D2F0D15000A1BA7 /* ProfileService.swift in Sources */,
+				CEF8E24A2D522EA600B98A90 /* ProfileResult.swift in Sources */,
 				CEBB7A712D143BDE002EFC93 /* WebViewViewControllerDelegate.swift in Sources */,
 				CE3EA1092D35532B00C58988 /* TabBarController.swift in Sources */,
 				CE229EAF2CF208FA00333100 /* ImagesListCell.swift in Sources */,

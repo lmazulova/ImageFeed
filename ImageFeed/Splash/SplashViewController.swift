@@ -1,6 +1,5 @@
 
 import UIKit
-import ProgressHUD
 
 final class SplashViewController: UIViewController {
     // MARK: - Private Properties
