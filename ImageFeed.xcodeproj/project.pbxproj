@@ -34,6 +34,7 @@
 		CED37DF22D1325FB00EC4F54 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED37DF12D1325FB00EC4F54 /* AuthViewController.swift */; };
 		CEF8E24A2D522EA600B98A90 /* ProfileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E2492D522EA600B98A90 /* ProfileResult.swift */; };
 		CEF8E24C2D522EE600B98A90 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E24B2D522EE600B98A90 /* Profile.swift */; };
+		CEF8E24F2D52370A00B98A90 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E24E2D52370A00B98A90 /* ImagesListService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		CED37DF12D1325FB00EC4F54 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		CEF8E2492D522EA600B98A90 /* ProfileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResult.swift; sourceTree = "<group>"; };
 		CEF8E24B2D522EE600B98A90 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		CEF8E24E2D52370A00B98A90 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 			children = (
 				CE8EE4072CEF891600288074 /* ImagesListViewController.swift */,
 				CE229EAE2CF208FA00333100 /* ImagesListCell.swift */,
+				CEF8E24E2D52370A00B98A90 /* ImagesListService.swift */,
 			);
 			path = ImagesList;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 			files = (
 				CE8EE4082CEF891600288074 /* ImagesListViewController.swift in Sources */,
 				CEF8E24C2D522EE600B98A90 /* Profile.swift in Sources */,
+				CEF8E24F2D52370A00B98A90 /* ImagesListService.swift in Sources */,
 				CE1B6C8E2D2F0D15000A1BA7 /* ProfileService.swift in Sources */,
 				CEF8E24A2D522EA600B98A90 /* ProfileResult.swift in Sources */,
 				CEBB7A712D143BDE002EFC93 /* WebViewViewControllerDelegate.swift in Sources */,

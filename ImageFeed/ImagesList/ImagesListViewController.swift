@@ -12,6 +12,7 @@ final class ImagesListViewController: UIViewController {
     @IBOutlet private weak var TableView: UITableView!
     
     // MARK: - Private Properties
+    private var ImageListServiceObserver: NSObjectProtocol?
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -25,6 +26,13 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         TableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        ImageListServiceObserver = NotificationCenter.default.addObserver(
+            forName: ImagesListService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self = self else { return }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -60,6 +68,15 @@ extension ImagesListViewController: UITableViewDataSource {
         imageListCell.selectionStyle = .none
         configCell(for: imageListCell, with: indexPath)
         return imageListCell
+    }
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        if indexPath.row + 1 == ImagesListService.shared.photos.count {
+            ImagesListService.shared.fetchPhotosNextPage()
+        }
     }
 }
 
