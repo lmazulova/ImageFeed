@@ -6,54 +6,60 @@ enum webViewConstants {
 }
 
 final class WebViewViewController: UIViewController {
+    private var estimateProgressObservation: NSKeyValueObservation?
+    private var webView: WKWebView!
     
-    // MARK: - IB Outlets
-    @IBOutlet weak var webView: WKWebView!
-    @IBOutlet weak var progressView: UIProgressView!
+    // MARK: - views
+    private func configureWebView() -> WKWebView {
+        let webView = WKWebView()
+        webView.navigationDelegate = self
+        view.addSubview(webView)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+        return webView
+    }
+    
+    private func configureProgressView() -> UIProgressView {
+        let progressView = UIProgressView(progressViewStyle: .default)
+        progressView.progressTintColor = .ypBlack
+        view.addSubview(progressView)
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            progressView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            progressView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+        
+        return progressView
+    }
     
     // MARK: - Delegate
     weak var delegate: WebViewViewControllerDelegate?
     
-    // MARK: - Overrides Methods
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView.navigationDelegate = self
+        view.backgroundColor = .ypWhite
+        webView = configureWebView()
+        let progressView = configureProgressView()
         loadAuthView()
+        estimateProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 self.updateProgress(progressView: progressView)
+             })
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            options: .new,
-            context: nil
-        )
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        webView.removeObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress)
-        )
-    }
-    
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
-    
     // MARK: - Private Methods
     private func loadAuthView() {
         guard var urlComponents = URLComponents(string: webViewConstants.unsplashAuthorizeURLString) else {
-            print("Invalid authorization URL")
+            print("[WebViewViewController.loadAuthView] - Invalid authorization URL")
             return
         }
         urlComponents.queryItems = [
@@ -63,14 +69,14 @@ final class WebViewViewController: UIViewController {
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
         guard let url = urlComponents.url else {
-            print("Failed to construct URL. Wrong query items.")
+            print("[WebViewViewController.loadAuthView] - Failed to construct URL. Wrong query items.")
             return
         }
         let request = URLRequest(url: url)
         webView.load(request)
     }
     
-    private func updateProgress() {
+    private func updateProgress(progressView: UIProgressView) {
         progressView.progress = Float(webView.estimatedProgress)
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
