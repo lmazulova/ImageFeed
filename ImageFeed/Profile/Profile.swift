@@ -1,5 +1,5 @@
+import Foundation
 
-import UIKit
 struct Profile {
     let username: String?
     let firstName: String?
@@ -14,17 +14,13 @@ struct Profile {
         else if let lastName = self.lastName {
             return lastName
         }
-        else {
-            return nil
-        }
+        return nil
     }
     var loginName: String? {
         if let username = self.username {
             return "@" + username
         }
-        else {
-            return nil
-        }
+        return nil
     }
     let bio: String?
 }

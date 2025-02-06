@@ -8,11 +8,12 @@ final class OAuth2Service {
     static let shared = OAuth2Service()
     private init() {}
     
+    // MARK: - Private methods
     private let urlSession = URLSession.shared
-    
     private var task: URLSessionTask?
     private var lastCode: String?
     
+    // MARK: - Token request
     private func makeOAuthTokenRequest(code: String) -> URLRequest? {
         guard var baseUrl = URLComponents(string: "https://unsplash.com/oauth/token") else {
             print("[OAuth2Service.makeOAuthTokenRequest] - Invalid host name")

@@ -3,7 +3,6 @@ import WebKit
 
 final class ProfileLogoutService {
     static let shared = ProfileLogoutService()
-    
     private init() { }
     
     func logout() {
@@ -15,6 +14,7 @@ final class ProfileLogoutService {
         switchToSplashScreen()
     }
     
+    // MARK: - Private methods
     private func cleanCookies() {
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
         

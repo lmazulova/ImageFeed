@@ -9,6 +9,9 @@ final class WebViewViewController: UIViewController {
     private var estimateProgressObservation: NSKeyValueObservation?
     private var webView: WKWebView!
     
+    // MARK: - Delegate
+    weak var delegate: WebViewViewControllerDelegate?
+    
     // MARK: - views
     private func configureWebView() -> WKWebView {
         let webView = WKWebView()
@@ -37,9 +40,6 @@ final class WebViewViewController: UIViewController {
         
         return progressView
     }
-    
-    // MARK: - Delegate
-    weak var delegate: WebViewViewControllerDelegate?
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {

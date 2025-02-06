@@ -1,4 +1,3 @@
-
 import UIKit
 import Kingfisher
 
@@ -47,7 +46,7 @@ final class ProfileViewController: UIViewController {
         self.updateProfileDetails(profile: profile)
     }
     
-    // MARK: - private Methods
+    // MARK: - Private methods
     private func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
@@ -89,6 +88,7 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    // MARK: - Logout Button Action
     @objc
     private func didTapButton() {
         ProfileLogoutService.shared.logout()

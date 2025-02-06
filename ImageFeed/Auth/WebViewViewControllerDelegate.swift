@@ -1,4 +1,3 @@
-
 import UIKit
 
 protocol WebViewViewControllerDelegate: AnyObject {

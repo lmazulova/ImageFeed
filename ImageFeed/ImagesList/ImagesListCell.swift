@@ -1,10 +1,3 @@
-//
-//  ImagesListCell.swift
-//  ImageFeed
-//
-//  Created by user on 23.11.2024.
-//
-
 import UIKit
 import Kingfisher
 
@@ -18,23 +11,21 @@ final class ImagesListCell: UITableViewCell {
     weak var delegate: ImagesListCellDelegate?
     
     // MARK: - IB Actions
-    
     @IBAction func likeButtonTapped(_ sender: Any) {
         delegate?.imageListCellDidTapLike(self)
     }
     
+    // MARK: - Public methods
     func setIsLiked(_ isLiked: Bool) {
         let imageName = isLiked ? "activeLike" : "inactiveLike"
         likeButton.setImage(UIImage(named: imageName), for: .normal)
     }
+    
     // MARK: - Properties
     static let reuseIdentifier = "ImagesListCell"
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         ImageView.kf.cancelDownloadTask()
-        
     }
 }
-

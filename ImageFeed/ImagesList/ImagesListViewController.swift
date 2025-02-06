@@ -1,7 +1,5 @@
-
 import UIKit
 import Kingfisher
-
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
@@ -13,7 +11,6 @@ final class ImagesListViewController: UIViewController {
     
     // MARK: - Private Properties
     private var ImageListServiceObserver: NSObjectProtocol?
-    private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private var photos: [Photo] = []
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -54,10 +51,13 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
+    // MARK: - Public Methods
     func updateTableViewAnimated() {
         let photosBefore = photos.count
         let photosAfter = ImagesListService.shared.photos.count
-        guard photosBefore != photosAfter else { return }
+        guard photosBefore != photosAfter else { 
+            print("[ImagesListViewController.updateTableViewAnimated] - не удалось получить новые фото")
+            return }
         photos = ImagesListService.shared.photos
         tableView.performBatchUpdates{
             let indexPaths = (photosBefore..<photosAfter).map { i in
@@ -69,7 +69,7 @@ final class ImagesListViewController: UIViewController {
 }
 
 
-// MARK: - UITableViewDataSource
+// MARK: - Extension UITableViewDataSource
 extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,7 +78,7 @@ extension ImagesListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-
+        
         guard let imageListCell = cell as? ImagesListCell,
               let url = URL(string: photos[indexPath.row].thumbImageURL) else {
             return UITableViewCell()
@@ -125,15 +125,40 @@ extension ImagesListViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - Extensions
+// MARK: - ImagesListCellDelegate
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        ImagesListService.shared.changeLike(photoId: photo.id, isLiked: photo.isLiked){ [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(()):
+                self.photos = ImagesListService.shared.photos
+                cell.setIsLiked(self.photos[indexPath.row].isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("[ImagesListViewController.imageListCellDidTapLike] - ошибка при изменении лайка: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
+// MARK: - Cell setup
 extension ImagesListViewController {
-//    переписать функцию градиента
     func applyGradient(to view: UIView) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [UIColor.ypBlackAlpha0.cgColor, UIColor.ypBlackAlpha02.cgColor]
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
         gradientLayer.endPoint = CGPoint(x: 0, y: 1)
+        gradientLayer.masksToBounds = true
+        view.layer.sublayers?
+            .filter { $0 is CAGradientLayer }
+            .forEach{ $0.removeFromSuperlayer() }
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
@@ -145,29 +170,12 @@ extension ImagesListViewController {
             guard let self = self else { return }
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
-        cell.dataLabel.text = dateFormatter.string(from: Date())
+        if let date = photos[indexPath.row].createdAt {
+            cell.dataLabel.text = dateFormatter.string(from: date)
+        }
+        else {
+            cell.dataLabel.text = ""
+        }
         cell.setIsLiked(photos[indexPath.row].isLiked)
-    }
-}
-
-extension ImagesListViewController: ImagesListCellDelegate {
-    func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
-        UIBlockingProgressHUD.show()
-        ImagesListService.shared.changeLike(photoId: photo.id, isLiked: photo.isLiked){ [weak self] result in
-            guard let self = self else { return }
-                switch result {
-                case .success(()):
-                    self.photos = ImagesListService.shared.photos
-                    cell.setIsLiked(self.photos[indexPath.row].isLiked)
-                    UIBlockingProgressHUD.dismiss()
-                case .failure(let error):
-                    UIBlockingProgressHUD.dismiss()
-                    print("Ошибка при изменении лайка: \(error.localizedDescription)")
-                }
-        
-            }
-
     }
 }

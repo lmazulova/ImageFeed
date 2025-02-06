@@ -21,18 +21,33 @@ final class SingleImageViewController: UIViewController {
         present(share, animated: true, completion: nil)
     }
     
-    func showError() {
-        
+    // MARK: - Error Handling
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Попробовать еще раз?",
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(title: "Не надо",
+                          style: .default)
+        )
+        alert.addAction(
+            UIAlertAction(title: "Повторить",
+                          style: .default,
+                          handler: { [weak self] _ in
+                              guard let self = self else { return }
+                              self.loadImage()
+                          })
+        )
+        self.present(alert, animated: true, completion: nil)
     }
     
-    // MARK: - viewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        sharingBtn.setTitle("", for: .normal)
-        scrollView.minimumZoomScale = 0.05
-        scrollView.maximumZoomScale = 1.25
+    // MARK: - Image Loading
+    private func loadImage() {
         guard let url = imageUrl else { return }
         UIBlockingProgressHUD.show()
+        imageView.contentMode = .scaleAspectFit
         imageView.kf.setImage(with: url) { [weak self] result in
             UIBlockingProgressHUD.dismiss()
             guard let self = self else { return }
@@ -45,6 +60,15 @@ final class SingleImageViewController: UIViewController {
                 self.showError()
             }
         }
+    }
+    
+    // MARK: - viewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        sharingBtn.setTitle("", for: .normal)
+        scrollView.minimumZoomScale = 0.05
+        scrollView.maximumZoomScale = 1.25
+        loadImage()
     }
 }
 

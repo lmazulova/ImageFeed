@@ -2,14 +2,16 @@ import UIKit
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
+    private init() {}
+    
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     
+    // MARK: - Private Properties
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private (set) var avatarURL: String?
     
-    private init() {}
-    
+    // MARK: - Fetching profile photo
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         task?.cancel()
@@ -35,7 +37,6 @@ final class ProfileImageService {
                 print("[fetchProfileImageURL] - \(error)")
                 completion(.failure(error))
             }
-            
             DispatchQueue.main.async {
                 self.task = nil
             }
@@ -44,20 +45,12 @@ final class ProfileImageService {
         task.resume()
     }
     
+    // MARK: - Logout method
     func removeAvatar() {
         avatarURL = nil
     }
 }
 
-// MARK: - Codable structures
-struct UserProfile: Codable {
-    let profileImage: ProfileImage
-    
-    enum CodingKeys: String, CodingKey {
-        case profileImage = "profile_image"
-    }
-}
 
-struct ProfileImage: Codable {
-    let medium: String
-}
+
+
