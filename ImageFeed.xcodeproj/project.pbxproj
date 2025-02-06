@@ -35,6 +35,7 @@
 		CEF8E24A2D522EA600B98A90 /* ProfileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E2492D522EA600B98A90 /* ProfileResult.swift */; };
 		CEF8E24C2D522EE600B98A90 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E24B2D522EE600B98A90 /* Profile.swift */; };
 		CEF8E24F2D52370A00B98A90 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF8E24E2D52370A00B98A90 /* ImagesListService.swift */; };
+		CEFC42A82D54D550001AA01B /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFC42A72D54D550001AA01B /* ProfileLogoutService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		CEF8E24B2D522EE600B98A90 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		CEF8E24E2D52370A00B98A90 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		CEF8E2542D526E3800B98A90 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEFC42A72D54D550001AA01B /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 				CEF8E24B2D522EE600B98A90 /* Profile.swift */,
 				CEF8E2492D522EA600B98A90 /* ProfileResult.swift */,
 				CE381CBA2D034AB800E222EE /* ProfileViewController.swift */,
+				CEFC42A72D54D550001AA01B /* ProfileLogoutService.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				CEF8E24F2D52370A00B98A90 /* ImagesListService.swift in Sources */,
 				CE1B6C8E2D2F0D15000A1BA7 /* ProfileService.swift in Sources */,
 				CEF8E24A2D522EA600B98A90 /* ProfileResult.swift in Sources */,
+				CEFC42A82D54D550001AA01B /* ProfileLogoutService.swift in Sources */,
 				CEBB7A712D143BDE002EFC93 /* WebViewViewControllerDelegate.swift in Sources */,
 				CE3EA1092D35532B00C58988 /* TabBarController.swift in Sources */,
 				CE229EAF2CF208FA00333100 /* ImagesListCell.swift in Sources */,

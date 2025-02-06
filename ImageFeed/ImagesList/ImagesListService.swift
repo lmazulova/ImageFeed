@@ -49,6 +49,11 @@ final class ImagesListService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
+    func cleanPhotosAndReload() {
+        photos.removeAll()
+        lastLoadedPage = nil
+    }
+    
     func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         if isLiked {
             guard let url = URL(string: "\(Constants.defaultBaseURL)/photos/\(photoId)/like"),

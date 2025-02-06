@@ -43,6 +43,10 @@ final class ProfileImageService {
         self.task = task
         task.resume()
     }
+    
+    func removeAvatar() {
+        avatarURL = nil
+    }
 }
 
 // MARK: - Codable structures

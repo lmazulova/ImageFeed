@@ -71,7 +71,6 @@ extension SingleImageViewController: UIScrollViewDelegate {
         let wScale = visibleRectSize.width/imageSize.width
         let scale = min(maxZoomScale, max(minZoomScale, max(hScale, wScale)))
         scrollView.setZoomScale(scale, animated: false)
-        imageView.frame.size = scrollView.contentSize
         centerImageInScrollView(image: image)
         scrollView.layoutIfNeeded()
     }
@@ -80,8 +79,8 @@ extension SingleImageViewController: UIScrollViewDelegate {
         view.layoutIfNeeded()
         let visibleRectSize = scrollView.bounds.size
         let newContentSize = scrollView.contentSize
-        let horizontalInset = max(0, (visibleRectSize.width - newContentSize.width) / 2)
-        let verticalInset =  max(0, (visibleRectSize.height - newContentSize.height) / 2)
+        let horizontalInset = (visibleRectSize.width - newContentSize.width) / 2
+        let verticalInset =  (visibleRectSize.height - newContentSize.height) / 2
         scrollView.contentInset = UIEdgeInsets(
             top: verticalInset,
             left: horizontalInset,

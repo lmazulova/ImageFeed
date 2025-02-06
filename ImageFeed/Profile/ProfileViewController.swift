@@ -91,10 +91,6 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        for view in view.subviews {
-            if view is UILabel {
-                view.removeFromSuperview()
-            }
-        }
+        ProfileLogoutService.shared.logout()
     }
 }
