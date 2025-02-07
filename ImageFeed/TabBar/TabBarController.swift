@@ -8,7 +8,10 @@ final class TabBarController: UITabBarController {
         let imageListViewController = storyboard.instantiateViewController(
             withIdentifier: "ImageListViewController"
         )
-        
+        tabBar.layer.shadowColor = UIColor.black.cgColor
+        tabBar.layer.shadowOpacity = 0.3
+        tabBar.layer.shadowOffset = CGSize(width: 0, height: -0.5)
+        tabBar.layer.masksToBounds = false
         let profileViewController = ProfileViewController()
         profileViewController.tabBarItem = UITabBarItem(
             title: "",

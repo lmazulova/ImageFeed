@@ -3,6 +3,7 @@ import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
+    func ImageLoaded(_ cell: ImagesListCell)
 }
 
 final class ImagesListViewController: UIViewController {
@@ -12,12 +13,6 @@ final class ImagesListViewController: UIViewController {
     // MARK: - Private Properties
     private var ImageListServiceObserver: NSObjectProtocol?
     private var photos: [Photo] = []
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     // MARK: - Overrides Methods
@@ -85,8 +80,8 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         imageListCell.delegate = self
         imageListCell.selectionStyle = .none
-        
-        configCell(for: imageListCell, with: url, indexPath: indexPath)
+        imageListCell.configCell(with: url, indexPath: indexPath)
+
         return imageListCell
     }
     func tableView(
@@ -138,44 +133,15 @@ extension ImagesListViewController: ImagesListCellDelegate {
             case .success(()):
                 self.photos = ImagesListService.shared.photos
                 cell.setIsLiked(self.photos[indexPath.row].isLiked)
-                UIBlockingProgressHUD.dismiss()
             case .failure(let error):
-                UIBlockingProgressHUD.dismiss()
                 print("[ImagesListViewController.imageListCellDidTapLike] - ошибка при изменении лайка: \(error.localizedDescription)")
             }
+            UIBlockingProgressHUD.dismiss()
         }
-    }
-}
-
-// MARK: - Cell setup
-extension ImagesListViewController {
-    func applyGradient(to view: UIView) {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = view.bounds
-        gradientLayer.colors = [UIColor.ypBlackAlpha0.cgColor, UIColor.ypBlackAlpha02.cgColor]
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 0, y: 1)
-        gradientLayer.masksToBounds = true
-        view.layer.sublayers?
-            .filter { $0 is CAGradientLayer }
-            .forEach{ $0.removeFromSuperlayer() }
-        view.layer.insertSublayer(gradientLayer, at: 0)
     }
     
-    func configCell(for cell: ImagesListCell, with url: URL, indexPath: IndexPath) {
-        applyGradient(to: cell.gradientView)
-        cell.ImageView.kf.indicatorType = .activity
-        cell.ImageView.kf.setImage(with: url,
-                                   placeholder: UIImage(named: "stub")) { [weak self] _ in
-            guard let self = self else { return }
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
-        if let date = photos[indexPath.row].createdAt {
-            cell.dataLabel.text = dateFormatter.string(from: date)
-        }
-        else {
-            cell.dataLabel.text = ""
-        }
-        cell.setIsLiked(photos[indexPath.row].isLiked)
+    func ImageLoaded(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
