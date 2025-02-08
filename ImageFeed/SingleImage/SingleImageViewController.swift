@@ -1,16 +1,9 @@
 
 import UIKit
+import Kingfisher
 final class SingleImageViewController: UIViewController {
     
-    var image: UIImage? {
-        didSet {
-            if isViewLoaded, let image = image {
-                imageView.image = image
-                imageView.frame.size = image.size
-                rescaleAndCenterImageInScrollView(image: image)
-            }
-        }
-    }
+    var imageUrl: URL?
     
     // MARK: - IB Outlets
     @IBOutlet weak private var backButton: UIButton!
@@ -23,21 +16,59 @@ final class SingleImageViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     @IBAction private func didTapShareButton(_ sender: Any) {
-        guard let image else { return }
+        guard let image = imageView.image else { return }
         let share = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(share, animated: true, completion: nil)
+    }
+    
+    // MARK: - Error Handling
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Попробовать еще раз?",
+            preferredStyle: .alert
+        )
+        alert.addAction(
+            UIAlertAction(title: "Не надо",
+                          style: .default)
+        )
+        alert.addAction(
+            UIAlertAction(title: "Повторить",
+                          style: .default,
+                          handler: { [weak self] _ in
+                              guard let self = self else { return }
+                              self.loadImage()
+                          })
+        )
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // MARK: - Image Loading
+    private func loadImage() {
+        guard let url = imageUrl else { return }
+        UIBlockingProgressHUD.show()
+        imageView.contentMode = .scaleAspectFit
+        imageView.kf.setImage(with: url) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.imageView.frame.size = imageResult.image.size
+                self.scrollView.contentSize = imageResult.image.size
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError()
+            }
+        }
     }
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         sharingBtn.setTitle("", for: .normal)
-        scrollView.minimumZoomScale = 0.1
+        scrollView.minimumZoomScale = 0.05
         scrollView.maximumZoomScale = 1.25
-        guard let image = image else { return }
-        imageView.image = image
-        imageView.frame.size = image.size
-        rescaleAndCenterImageInScrollView(image: image)
+        loadImage()
     }
 }
 
@@ -49,11 +80,12 @@ extension SingleImageViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        guard let image = image else { return }
+        guard let image = imageView.image else { return }
         centerImageInScrollView(image: image)
     }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
+        imageView.frame.origin = CGPoint(x: 0, y: 0)
         let minZoomScale = scrollView.minimumZoomScale
         let maxZoomScale = scrollView.maximumZoomScale
         view.layoutIfNeeded()
@@ -72,8 +104,7 @@ extension SingleImageViewController: UIScrollViewDelegate {
         let visibleRectSize = scrollView.bounds.size
         let newContentSize = scrollView.contentSize
         let horizontalInset = (visibleRectSize.width - newContentSize.width) / 2
-        let verticalInset = (visibleRectSize.height - newContentSize.height) / 2
-        
+        let verticalInset =  (visibleRectSize.height - newContentSize.height) / 2
         scrollView.contentInset = UIEdgeInsets(
             top: verticalInset,
             left: horizontalInset,

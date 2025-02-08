@@ -1,4 +1,3 @@
-
 import UIKit
 import Kingfisher
 
@@ -33,6 +32,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypBlack
         profileImageServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ProfileImageService.didChangeNotification,
@@ -47,7 +47,7 @@ final class ProfileViewController: UIViewController {
         self.updateProfileDetails(profile: profile)
     }
     
-    // MARK: - private Methods
+    // MARK: - Private methods
     private func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
@@ -89,12 +89,18 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    // MARK: - Logout Button Action
     @objc
     private func didTapButton() {
-        for view in view.subviews {
-            if view is UILabel {
-                view.removeFromSuperview()
-            }
-        }
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { _ in
+            ProfileLogoutService.shared.logout()
+        }))
+        alert.addAction(UIAlertAction(title: "Нет", style: .default, handler: nil))
+        self.present(alert, animated: true)
     }
 }
