@@ -12,7 +12,7 @@ final class AuthHelper: AuthHelperProtocol {
         self.configuration = configuration
     }
     
-    private func authURL() -> URL? {
+    func authURL() -> URL? {
         guard var urlComponents = URLComponents(string: webViewConstants.unsplashAuthorizeURLString) else {
             print("[AuthHelper.authURL] - Invalid authorization URL")
             return nil
