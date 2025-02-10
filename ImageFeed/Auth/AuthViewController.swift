@@ -57,9 +57,12 @@ final class AuthViewController: UIViewController {
     
     @objc private func buttonTapped() {
         let webViewController = WebViewViewController()
+        let authHelper = AuthHelper(configuration: AuthConfiguration.standart)
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        webViewPresenter.view = webViewController
+        webViewController.presenter = webViewPresenter
         webViewController.delegate = self
         navigationController?.pushViewController(webViewController, animated: true)
-        
     }
     // MARK: - Overrides Methods
     override func viewDidLoad() {

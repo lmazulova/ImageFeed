@@ -6,7 +6,7 @@ final class ImagesListService {
     private init() {}
     
     // MARK: - Private Properties
-    private (set) var photos: [Photo] = []
+    private(set) var photos: [Photo] = []
     private var task: URLSessionTask?
     private var lastLoadedPage: Int?
     
