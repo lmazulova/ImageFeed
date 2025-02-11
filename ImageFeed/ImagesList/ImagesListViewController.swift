@@ -8,18 +8,25 @@ protocol ImagesListCellDelegate: AnyObject {
 
 final class ImagesListViewController: UIViewController {
     // MARK: - IB Outlets
-    @IBOutlet private weak var tableView: UITableView!
+    private var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
+        return tableView
+    }()
     
     // MARK: - Private Properties
     private var ImageListServiceObserver: NSObjectProtocol?
     private var photos: [Photo] = []
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         ImagesListService.shared.fetchPhotosNextPage()
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        setupUI()
+        setupTableView()
         
         ImageListServiceObserver = NotificationCenter.default.addObserver(
             forName: ImagesListService.didChangeNotification,
@@ -31,19 +38,22 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == showSingleImageSegueIdentifier {
-            guard let viewController = segue.destination as? SingleImageViewController,
-                  let indexPath = sender as? IndexPath
-            else {
-                assertionFailure("Invalid segue destination")
-                return
-            }
-            viewController.imageUrl = URL(string: photos[indexPath.row].largeImageURL)
-            
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    private func setupUI() {
+        view.backgroundColor = .ypBlack
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        ])
+    }
+    
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)
     }
     
     // MARK: - Public Methods
@@ -99,7 +109,10 @@ extension ImagesListViewController: UITableViewDataSource {
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
+        let singleImageController = SingleImageViewController()
+        singleImageController.imageUrl = URL(string: photos[indexPath.row].largeImageURL)
+        singleImageController.modalPresentationStyle = .fullScreen
+        present(singleImageController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
