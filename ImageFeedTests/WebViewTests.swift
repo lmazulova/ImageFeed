@@ -130,4 +130,4 @@ final class WebViewTests: XCTestCase {
         //then
         XCTAssert(code == "test code")
     }
-}	
+}
