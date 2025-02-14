@@ -14,12 +14,20 @@ final class TabBarController: UITabBarController {
         tabBar.isTranslucent = false
         
         let imageListViewController = ImagesListViewController()
+        let imagesListPresenter = ImagesListPresenter()
+        imageListViewController.presenter = imagesListPresenter
+        imagesListPresenter.view = imageListViewController
+        
         imageListViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "tab_editorial_active"),
             selectedImage: nil
         )
         let profileViewController = ProfileViewController()
+        let profilePresenter = ProfilePresenter()
+        profilePresenter.view = profileViewController
+        profileViewController.presenter = profilePresenter
+        
         profileViewController.tabBarItem = UITabBarItem(
             title: "",
             image: UIImage(named: "TabProfileActive"),

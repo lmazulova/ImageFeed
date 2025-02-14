@@ -1,7 +1,12 @@
 import UIKit
 
-final class ImagesListService {
-    
+public protocol ImagesListServiceProtocol: AnyObject {
+    func fetchPhotosNextPage()
+    var photos: [Photo] { get }
+    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     static let shared = ImagesListService()
     private init() {}
     
@@ -86,7 +91,8 @@ final class ImagesListService {
                     self?.photos.append(contentsOf: newPhotos)
                     NotificationCenter.default.post(
                         name: ImagesListService.didChangeNotification,
-                        object: self
+                        object: self,
+                        userInfo: ["photos": self?.photos as Any]
                     )
                     self?.task = nil
                 }

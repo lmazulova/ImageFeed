@@ -103,17 +103,16 @@ final class ImagesListCell: UITableViewCell {
         likeButton.setImage(UIImage(named: imageName), for: .normal)
     }
    
-    func configCell(with url: URL, indexPath: IndexPath) {
-        if let date = ImagesListService.shared.photos[indexPath.row].createdAt {
+    func configCell(with url: URL, photo: Photo) {
+        if let date = photo.createdAt {
             dataLabel.text = dateFormatter.string(from: date)
         }
         else {
             dataLabel.text = ""
         }
-//        applyGradient(to: gradientView)
-        setIsLiked(ImagesListService.shared.photos[indexPath.row].isLiked)
+        setIsLiked(photo.isLiked)
         photoView.kf.indicatorType = .activity
-        photoView.kf.setImage(with: url, placeholder: UIImage(named: "stub")) { [weak self] _ in
+        photoView.kf.setImage(with: url, placeholder: UIImage(named: "stub")){ [weak self] _ in
             guard let self = self else { return }
             self.delegate?.ImageLoaded(self)
         }
@@ -139,5 +138,9 @@ final class ImagesListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         photoView.kf.cancelDownloadTask()
+        photoView.image = nil
+        likeButton.setImage(UIImage(named: "inactiveLike"), for: .normal)
+        dataLabel.text = nil
+        gradientView.layer.sublayers?.removeAll()
     }
 }

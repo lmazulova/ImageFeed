@@ -1,6 +1,11 @@
 import UIKit
 
-final class ProfileImageService {
+
+public protocol ProfileImageServiceProtocol: AnyObject {
+    var avatarURL: String? {get}
+}
+
+final class ProfileImageService: ProfileImageServiceProtocol {
     static let shared = ProfileImageService()
     private init() {}
     
@@ -9,7 +14,7 @@ final class ProfileImageService {
     // MARK: - Private Properties
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
-    private (set) var avatarURL: String?
+    private(set) var avatarURL: String?
     
     // MARK: - Fetching profile photo
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
