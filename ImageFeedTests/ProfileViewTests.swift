@@ -47,12 +47,12 @@ final class ProfileImageServiceDummy: ProfileImageServiceProtocol {
 }
 
 final class ProfileViewTests: XCTestCase {
-//    проверить что вызывается viewDidLoad Presentera
     func testViewControllerCallsViewDidLoad() {
         //given
         let viewController = ProfileViewController()
         let presenter = ProfilePresenterSpy()
         viewController.presenter = presenter
+        presenter.view = viewController
         
         //when
         _ = viewController.view
@@ -66,6 +66,8 @@ final class ProfileViewTests: XCTestCase {
         let presenter = ProfilePresenter()
         let viewController = ProfileViewControllerSpy()
         presenter.view = viewController
+        viewController.presenter = presenter
+        
         let profile = Profile(
             username: nil,
             firstName: nil,
@@ -101,6 +103,7 @@ final class ProfileViewTests: XCTestCase {
         let presenter = ProfilePresenter()
         let viewController = ProfileViewControllerSpy()
         presenter.view = viewController
+        viewController.presenter = presenter
         
         //when
         presenter.handleLogout()

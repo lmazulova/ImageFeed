@@ -1,12 +1,12 @@
 import UIKit
 
-
 public protocol ImagesListPresenterProtocol: AnyObject {
     func viewDidLoad()
     func shouldUpdateTable(newPhotos: [Photo])
     var view: ImagesListControllerProtocol? { get set }
+    var imageListService: ImagesListServiceProtocol? { get }
     func shouldDownloadImages(indexPath: IndexPath)
-    func changeLike(photo: Photo, completion: @escaping (Result<[Photo], Error>) -> Void)
+    func changeLike(photo: Photo, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
@@ -40,7 +40,10 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     func shouldUpdateTable(newPhotos: [Photo]) {
         if let lastPhotos = view?.photos,
            lastPhotos.count != newPhotos.count {
+            print(lastPhotos.count)
             DispatchQueue.main.async{
+                guard let view = self.view else {print("нет view")
+                return}
                 self.view?.updateTableViewAnimated(newPhotos: newPhotos, from: lastPhotos.count, to: newPhotos.count)
             }
         }
@@ -56,22 +59,9 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
         }
     }
     
-    func changeLike(photo: Photo, completion: @escaping (Result<[Photo], Error>) -> Void) {
-        imageListService?.changeLike(photoId: photo.id, isLiked: photo.isLiked) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success():
-                if let photos = imageListService?.photos {
-                    completion(.success(photos))
-                }
-                else {
-                    let error = NSError()
-                    completion(.failure(error))
-                }
-            case .failure(let error):
-                print("[ImagesListPresenter.changeLike] - ошибка при изменении лайка: \(error.localizedDescription)")
-                completion(.failure(error))
-            }
-        }
+    func changeLike(photo: Photo, completion: @escaping (Result<Void, Error>) -> Void) {
+        imageListService?.changeLike(photoId: photo.id, isLiked: photo.isLiked, completion)
     }
 }
+
+

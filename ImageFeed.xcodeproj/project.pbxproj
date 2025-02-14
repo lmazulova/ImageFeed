@@ -30,6 +30,7 @@
 		CE8EE4102CEF891800288074 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = CE8EE40F2CEF891800288074 /* Base */; };
 		CE9EEBA42D5F6ECC00EC27A0 /* WebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EEBA32D5F6ECC00EC27A0 /* WebViewTests.swift */; };
 		CE9EEBAB2D5F6FA000EC27A0 /* ProfileViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EEBAA2D5F6FA000EC27A0 /* ProfileViewTests.swift */; };
+		CE9EEBAD2D5F735B00EC27A0 /* ImagesListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EEBAC2D5F735B00EC27A0 /* ImagesListTests.swift */; };
 		CEAD7ADE2D2E876800295720 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = CEAD7ADD2D2E876800295720 /* ProgressHUD */; };
 		CEBB7A6F2D133197002EFC93 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBB7A6E2D133197002EFC93 /* WebViewViewController.swift */; };
 		CEBB7A712D143BDE002EFC93 /* WebViewViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBB7A702D143BDE002EFC93 /* WebViewViewControllerDelegate.swift */; };
@@ -84,6 +85,7 @@
 		CE9EEBA12D5F6ECC00EC27A0 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9EEBA32D5F6ECC00EC27A0 /* WebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewTests.swift; sourceTree = "<group>"; };
 		CE9EEBAA2D5F6FA000EC27A0 /* ProfileViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewTests.swift; sourceTree = "<group>"; };
+		CE9EEBAC2D5F735B00EC27A0 /* ImagesListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListTests.swift; sourceTree = "<group>"; };
 		CEBB7A6E2D133197002EFC93 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 		CEBB7A702D143BDE002EFC93 /* WebViewViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewControllerDelegate.swift; sourceTree = "<group>"; };
 		CEBB7A722D148F4E002EFC93 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			children = (
 				CE9EEBA32D5F6ECC00EC27A0 /* WebViewTests.swift */,
 				CE9EEBAA2D5F6FA000EC27A0 /* ProfileViewTests.swift */,
+				CE9EEBAC2D5F735B00EC27A0 /* ImagesListTests.swift */,
 			);
 			path = ImageFeedTests;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE9EEBAD2D5F735B00EC27A0 /* ImagesListTests.swift in Sources */,
 				CE9EEBA42D5F6ECC00EC27A0 /* WebViewTests.swift in Sources */,
 				CE9EEBAB2D5F6FA000EC27A0 /* ProfileViewTests.swift in Sources */,
 			);
@@ -677,7 +681,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageFeed.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageFeed";
 			};
 			name = Debug;
@@ -695,7 +699,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageFeed.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageFeed";
 			};
 			name = Release;

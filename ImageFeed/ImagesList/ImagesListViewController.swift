@@ -130,14 +130,14 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        presenter?.changeLike(photo: photo){ [weak self] (result: Result<[Photo], Error>) in
+        presenter?.changeLike(photo: photo){ [weak self] (result: Result<Void, Error>) in
             guard let self = self else { return }
             switch result {
-            case .success(let updatedPhotos):
-                self.setPhotos(newPhotos: updatedPhotos)
+            case .success():
+                self.photos[indexPath.row].isLiked.toggle()
                 cell.setIsLiked(self.photos[indexPath.row].isLiked)
-            case .failure(_):
-                print("[ImagesListViewController.imageListCellDidTapLike] - ошибка при изменении лайка")
+            case .failure(let error):
+                print("[ImagesListViewController.imageListCellDidTapLike] - ошибка при изменении лайка \(error.localizedDescription)")
             }
             UIBlockingProgressHUD.dismiss()
         }
