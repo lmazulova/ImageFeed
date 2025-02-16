@@ -72,8 +72,8 @@ final class ImagesListCell: UITableViewCell {
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
-            setupUI()
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
@@ -96,7 +96,7 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Public methods
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.layoutIfNeeded() 
+        contentView.layoutIfNeeded()
         applyGradient(to: gradientView)
     }
     
@@ -104,7 +104,7 @@ final class ImagesListCell: UITableViewCell {
         let imageName = isLiked ? "activeLike" : "inactiveLike"
         likeButton.setImage(UIImage(named: imageName), for: .normal)
     }
-   
+    
     func configCell(with url: URL, photo: Photo) {
         if let date = photo.createdAt {
             dataLabel.text = dateFormatter.string(from: date)
@@ -120,7 +120,7 @@ final class ImagesListCell: UITableViewCell {
         }
     }
     
-    // MARK: - Private method 
+    // MARK: - Private method
     private func applyGradient(to view: UIView) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds

@@ -2,7 +2,7 @@ import UIKit
 import ProgressHUD
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishThreadLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         ProgressHUD.animationType = .activityIndicator
