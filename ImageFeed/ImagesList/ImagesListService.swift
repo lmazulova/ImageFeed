@@ -25,7 +25,10 @@ final class ImagesListService: ImagesListServiceProtocol {
         }
         guard let url = URL(string: "\(Constants.defaultBaseURL)/photos/\(photoId)/like"),
               let token = OAuth2TokenStorage.shared.token
-        else { return }
+        else {
+            print("[ImagesListService.changeLike] - wrong token or URL")
+            return
+        }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = httpMethod

@@ -5,11 +5,12 @@ final class SingleImageViewController: UIViewController {
     
     var imageUrl: URL?
     
-    // MARK: - Views
+    // MARK: - UI elements
     private let backButton: UIButton = {
         let backButton = UIButton(type: .custom)
         backButton.setImage(UIImage(named: "Backward"), for: .normal)
         backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.accessibilityIdentifier = "navigation back button"
         return backButton
     }()
     
@@ -35,7 +36,7 @@ final class SingleImageViewController: UIViewController {
         return imageView
     }()
     
-    
+    // MARK: - UI elements setup
     func setupUI() {
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)

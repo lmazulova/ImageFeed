@@ -29,6 +29,7 @@ final class WebViewViewController: UIViewController &  WebViewViewControllerProt
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             webView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
+        webView.accessibilityIdentifier = "UnsplashWebView"
         return webView
     }
     

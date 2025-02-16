@@ -13,6 +13,10 @@ public protocol ImagesListControllerProtocol: AnyObject {
 }
 final class ImagesListViewController: UIViewController & ImagesListControllerProtocol {
     
+    // MARK: - Private Properties
+    private(set) var photos: [Photo] = []
+    var presenter: ImagesListPresenterProtocol?
+    
     // MARK: - Table View
     private var tableView: UITableView = {
         let tableView = UITableView()
@@ -22,10 +26,6 @@ final class ImagesListViewController: UIViewController & ImagesListControllerPro
         tableView.separatorStyle = .none
         return tableView
     }()
-    
-    // MARK: - Private Properties
-    private(set) var photos: [Photo] = []
-    var presenter: ImagesListPresenterProtocol?
     
     // MARK: - Overrides Methods
     override func viewDidLoad() {
@@ -43,7 +43,7 @@ final class ImagesListViewController: UIViewController & ImagesListControllerPro
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         ])
-//        tableView.prefetchDataSource = nil
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(ImagesListCell.self, forCellReuseIdentifier: ImagesListCell.reuseIdentifier)

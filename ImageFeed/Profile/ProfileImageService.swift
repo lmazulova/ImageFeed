@@ -39,7 +39,7 @@ final class ProfileImageService: ProfileImageServiceProtocol {
                         object: self,
                         userInfo: ["URL": avatarURL])
             case .failure(let error):
-                print("[fetchProfileImageURL] - \(error)")
+                print("[ProfileImageService.fetchProfileImageURL] - \(error)")
                 completion(.failure(error))
             }
             DispatchQueue.main.async {

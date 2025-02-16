@@ -8,7 +8,6 @@ final class ImagesListCell: UITableViewCell {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "inactiveLike"), for: .normal)
-        
         return button
     }()
     
@@ -64,6 +63,8 @@ final class ImagesListCell: UITableViewCell {
         ])
         
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        contentView.bringSubviewToFront(likeButton)
+        likeButton.accessibilityIdentifier = "like button"
     }
     
     // MARK: - Delegate
@@ -95,6 +96,7 @@ final class ImagesListCell: UITableViewCell {
     // MARK: - Public methods
     override func layoutSubviews() {
         super.layoutSubviews()
+        contentView.layoutIfNeeded() 
         applyGradient(to: gradientView)
     }
     

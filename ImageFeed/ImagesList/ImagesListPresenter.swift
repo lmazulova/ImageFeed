@@ -40,11 +40,9 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
     func shouldUpdateTable(newPhotos: [Photo]) {
         if let lastPhotos = view?.photos,
            lastPhotos.count != newPhotos.count {
-            print(lastPhotos.count)
             DispatchQueue.main.async{
-                guard let view = self.view else {print("нет view")
-                return}
-                self.view?.updateTableViewAnimated(newPhotos: newPhotos, from: lastPhotos.count, to: newPhotos.count)
+                guard let view = self.view else { return }
+                view.updateTableViewAnimated(newPhotos: newPhotos, from: lastPhotos.count, to: newPhotos.count)
             }
         }
         else {

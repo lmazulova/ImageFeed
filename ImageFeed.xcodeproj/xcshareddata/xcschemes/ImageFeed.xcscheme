@@ -35,7 +35,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CEEFE3D02D5A73A700A4B382"
+               BlueprintIdentifier = "CE9EEBA02D5F6ECC00EC27A0"
                BuildableName = "ImageFeedTests.xctest"
                BlueprintName = "ImageFeedTests"
                ReferencedContainer = "container:ImageFeed.xcodeproj">
@@ -46,7 +46,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CE045C262D5A5F2C00BD7695"
+               BlueprintIdentifier = "CE9EEBB12D5FAF2A00EC27A0"
                BuildableName = "ImageFeedUITests.xctest"
                BlueprintName = "ImageFeedUITests"
                ReferencedContainer = "container:ImageFeed.xcodeproj">

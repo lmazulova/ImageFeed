@@ -94,7 +94,6 @@ final class ProfileViewTests: XCTestCase {
         presenter.updateAvatar()
         
         //then
-        print(viewController.updateAvatarImageDidCalled)
         XCTAssertTrue(viewController.updateAvatarImageDidCalled)
     }
     
