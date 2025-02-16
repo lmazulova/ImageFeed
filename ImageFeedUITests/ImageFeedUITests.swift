@@ -45,10 +45,9 @@ final class ImageFeedUITests: XCTestCase {
         
         sleep(1)
         
-        let cellForSwipeDown = tablesQuery.children(matching: .cell).element(boundBy: 0)
-        XCTAssert(cellForSwipeDown.waitForExistence(timeout: 10))
+        tablesQuery.element.swipeDown()
         
-        cellForSwipeDown.swipeDown()
+        sleep(1)
         
         let cellToLike = app.tables.children(matching: .cell).element(boundBy: 0)
         let likeButtonButton = cellToLike/*@START_MENU_TOKEN@*/.buttons["like button"]/*[[".buttons[\"inactiveLike\"]",".buttons[\"like button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
@@ -58,7 +57,7 @@ final class ImageFeedUITests: XCTestCase {
         
         likeButtonButton.tap()
         
-        sleep(2)
+        sleep(1)
         
         likeButtonButton.tap()
         
@@ -66,7 +65,8 @@ final class ImageFeedUITests: XCTestCase {
         
         cellToLike.tap()
         let image = app.scrollViews.images.element(boundBy: 0)
-            
+        XCTAssert(image.waitForExistence(timeout: 10))
+        
         image.pinch(withScale: 3, velocity: 1)
             
         image.pinch(withScale: 0.5, velocity: -1)
