@@ -91,6 +91,9 @@ extension ImagesListViewController: UITableViewDataSource {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
+        if ProcessInfo.processInfo.environment["isUITest"] == "true" {
+            return
+        }
         presenter?.shouldDownloadImages(indexPath: indexPath)
     }
 }

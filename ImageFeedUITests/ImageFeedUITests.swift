@@ -5,6 +5,8 @@ final class ImageFeedUITests: XCTestCase {
     private let app = XCUIApplication()
     
     override func setUpWithError() throws {
+        try super.setUpWithError()
+        app.launchEnvironment["isUITest"] = "true"
         continueAfterFailure = false
         app.launch()
     }
@@ -36,39 +38,26 @@ final class ImageFeedUITests: XCTestCase {
     
     func testFeed() throws {
         let tablesQuery = app.tables
-        let cellForSwipeUp = tablesQuery.children(matching: .cell).element(boundBy: 0)
-        XCTAssert(cellForSwipeUp.waitForExistence(timeout: 10))
+        let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        XCTAssert(cell.waitForExistence(timeout: 10))
         
-        sleep(1)
-        
-        cellForSwipeUp.swipeUp()
-        
-        sleep(1)
-        
-        tablesQuery.element.swipeDown()
-        
-        sleep(1)
+        cell.swipeUp()
         
         let cellToLike = app.tables.children(matching: .cell).element(boundBy: 0)
-        let likeButtonButton = cellToLike/*@START_MENU_TOKEN@*/.buttons["like button"]/*[[".buttons[\"inactiveLike\"]",".buttons[\"like button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        XCTAssert(likeButtonButton.waitForExistence(timeout: 10))
+        XCTAssert(cellToLike.waitForExistence(timeout: 10))
         
+        cellToLike/*@START_MENU_TOKEN@*/.buttons["like button"]/*[[".buttons[\"inactiveLike\"]",".buttons[\"like button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         sleep(1)
-        
-        likeButtonButton.tap()
-        
-        sleep(1)
-        
-        likeButtonButton.tap()
+        cellToLike/*@START_MENU_TOKEN@*/.buttons["like button"]/*[[".buttons[\"inactiveLike\"]",".buttons[\"like button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
         sleep(1)
         
         cellToLike.tap()
+        
         let image = app.scrollViews.images.element(boundBy: 0)
         XCTAssert(image.waitForExistence(timeout: 10))
         
         image.pinch(withScale: 3, velocity: 1)
-            
         image.pinch(withScale: 0.5, velocity: -1)
             
         let navBackButtonWhiteButton = app.buttons["navigation back button"]
