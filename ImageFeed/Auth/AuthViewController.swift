@@ -9,7 +9,7 @@ final class AuthViewController: UIViewController {
     // MARK: - Delegate
     weak var delegate: AuthViewControllerDelegate?
     
-    // MARK: - views
+    // MARK: - UI elements
     private func configureBackButton(imageName: String) {
         guard let image = UIImage(named: imageName) else { return }
         navigationController?.navigationBar.backIndicatorImage = image
@@ -39,6 +39,7 @@ final class AuthViewController: UIViewController {
         button.setTitleColor(.ypBlack, for: .normal)
         button.layer.cornerRadius = 16
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        button.accessibilityIdentifier = "Authenticate"
         
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -57,9 +58,12 @@ final class AuthViewController: UIViewController {
     
     @objc private func buttonTapped() {
         let webViewController = WebViewViewController()
+        let authHelper = AuthHelper(configuration: AuthConfiguration.standart)
+        let webViewPresenter = WebViewPresenter(authHelper: authHelper)
+        webViewPresenter.view = webViewController
+        webViewController.presenter = webViewPresenter
         webViewController.delegate = self
         navigationController?.pushViewController(webViewController, animated: true)
-        
     }
     // MARK: - Overrides Methods
     override func viewDidLoad() {

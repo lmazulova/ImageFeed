@@ -1,12 +1,17 @@
 import UIKit
 
-final class ImagesListService {
-    
+public protocol ImagesListServiceProtocol: AnyObject {
+    func fetchPhotosNextPage()
+    var photos: [Photo] { get }
+    func changeLike(photoId: String, isLiked: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+}
+
+final class ImagesListService: ImagesListServiceProtocol {
     static let shared = ImagesListService()
     private init() {}
     
     // MARK: - Private Properties
-    private (set) var photos: [Photo] = []
+    private(set) var photos: [Photo] = []
     private var task: URLSessionTask?
     private var lastLoadedPage: Int?
     
@@ -20,7 +25,10 @@ final class ImagesListService {
         }
         guard let url = URL(string: "\(Constants.defaultBaseURL)/photos/\(photoId)/like"),
               let token = OAuth2TokenStorage.shared.token
-        else { return }
+        else {
+            print("[ImagesListService.changeLike] - wrong token or URL")
+            return
+        }
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpMethod = httpMethod
@@ -86,7 +94,8 @@ final class ImagesListService {
                     self?.photos.append(contentsOf: newPhotos)
                     NotificationCenter.default.post(
                         name: ImagesListService.didChangeNotification,
-                        object: self
+                        object: self,
+                        userInfo: ["photos": self?.photos as Any]
                     )
                     self?.task = nil
                 }
