@@ -106,10 +106,15 @@ final class SingleImageViewController: UIViewController {
     // MARK: - Image Loading
     private func loadImage() {
         guard let url = imageUrl else { return }
-        UIBlockingProgressHUD.show()
+        DispatchQueue.main.async {
+            UIBlockingProgressHUD.show()
+        }
+        
         imageView.contentMode = .scaleAspectFit
         imageView.kf.setImage(with: url) { [weak self] result in
-            UIBlockingProgressHUD.dismiss()
+            DispatchQueue.main.async {
+                UIBlockingProgressHUD.dismiss()
+            }
             guard let self = self else { return }
             switch result {
             case .success(let imageResult):
@@ -121,6 +126,7 @@ final class SingleImageViewController: UIViewController {
             }
         }
     }
+    
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
