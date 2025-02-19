@@ -1,5 +1,5 @@
 import UIKit
-@preconcurrency import WebKit
+import WebKit
 
 public protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
