@@ -114,10 +114,7 @@ final class ImagesListCell: UITableViewCell {
         }
         setIsLiked(photo.isLiked)
         photoView.kf.indicatorType = .activity
-        photoView.kf.setImage(with: url, placeholder: UIImage(named: "stub")){ [weak self] _ in
-            guard let self = self else { return }
-            self.delegate?.ImageLoaded(self)
-        }
+        photoView.kf.setImage(with: url, placeholder: UIImage(named: "stub")){_ in}
     }
     
     // MARK: - Private method
