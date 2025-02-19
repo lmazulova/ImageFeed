@@ -3,7 +3,6 @@ import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
-    func ImageLoaded(_ cell: ImagesListCell)
 }
 
 public protocol ImagesListControllerProtocol: AnyObject {
@@ -144,10 +143,5 @@ extension ImagesListViewController: ImagesListCellDelegate {
             }
             UIBlockingProgressHUD.dismiss()
         }
-    }
-    
-    func ImageLoaded(_ cell: ImagesListCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
